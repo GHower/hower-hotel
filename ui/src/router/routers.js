@@ -18,6 +18,189 @@ import parentView from '@/components/parent-view'
  */
 
 export default [
+  // 房间相关
+  {
+    path: '/rooms_status',
+    name: 'rooms_status',
+    meta: {
+      hideInBread: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'rooms_status_page',
+        name: 'rooms_status_page',
+        meta: {
+          icon: 'md-home',
+          title: '房间状态'
+        },
+        component: () => import('@/view/rooms-status/rooms-status-page.vue')
+      },
+    ]
+  },
+  // 订单相关
+  {
+    path: '/order',
+    name: 'order',
+    meta: {
+      hideInBread: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'order_info_page',
+        name: 'order_info_page',
+        meta: {
+          icon: 'md-home',
+          title: '订单信息'
+        },
+        component: () => import('@/view/order/order_info_page.vue')
+      },
+    ]
+  },
+  // 会员相关
+  {
+    path: '/customer',
+    name: 'customer',
+    meta: {
+      hideInBread: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'customer_manage_page',
+        name: 'customer_manage_page',
+        meta: {
+          icon: 'md-home',
+          title: '会员管理'
+        },
+        component: () => import('@/view/customer/customer_manage_page.vue')
+      },
+    ]
+  },
+  // 报表管理
+  {
+    path: '/report_forms',
+    name: 'report_forms',
+    meta: {
+      icon: 'ios-stats',
+      title: '报表'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'today_customer_page',
+        name: 'today_customer_page',
+        meta: {
+          icon: 'ios-document',
+          title: '今日住客报表'
+        },
+        component: () => import('@/view/report-forms/today-customer/today-customer.vue')
+      },
+      {
+        path: 'financial_statement_page',
+        name: 'financial_statement_page',
+        meta: {
+          icon: 'ios-document',
+          title: '财务报表'
+        },
+        component: () => import('@/view/report-forms/financial-statement/financial-statement.vue')
+      }
+    ]
+  },
+  // TODO:后台管理
+  {
+    path: '/back_manage',
+    name: 'back_manage',
+    meta: {
+      icon: 'ios-stats',
+      title: '后台管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'staff_manage_page',
+        name: 'staff_manage_page',
+        meta: {
+          icon: 'ios-document',
+          title: '人员管理'
+        },
+        component: () => import('@/view/back-manage/staff-manage/staff-manage-page.vue')
+      },
+      {
+        path: 'dep_manage_page',
+        name: 'dep_manage_page',
+        meta: {
+          icon: 'ios-document',
+          title: '部门管理'
+        },
+        component: () => import('@/view/back-manage/dep-manage/dep-manage-page.vue')
+      }
+    ]
+  },
+  // TODO:统计中心
+  {
+    path: '/statistics_center',
+    name: 'statistics_center',
+    meta: {
+      icon: 'ios-stats',
+      title: '统计中心'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'rental_page',
+        name: 'rental_page',
+        meta: {
+          icon: 'ios-document',
+          title: '租住统计'
+        },
+        component: () => import('@/view/statistics-center/rental/rental-page.vue')
+      },
+      {
+        path: 'revenue_page',
+        name: 'revenue_page',
+        meta: {
+          icon: 'ios-document',
+          title: '收支统计'
+        },
+        component: () => import('@/view/statistics-center/revenue-page/revenue-page.vue')
+      },
+    ]
+  },
+  //TODO: 个人中心
+  {
+    path: '/personal_center',
+    name: 'personal_center',
+    meta: {
+      icon: 'ios-stats',
+      title: '个人中心'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'personal_info_page',
+        name: 'personal_info_page',
+        meta: {
+          icon: 'ios-document',
+          title: '个人资料'
+        },
+        component: () => import('@/view/personal-center/personal-info/personal-info-page.vue')
+      },
+      {
+        path: 'change_pwd_page',
+        name: 'change_pwd_page',
+        meta: {
+          icon: 'ios-document',
+          title: '修改密码'
+        },
+        component: () => import('@/view/personal-center/change-pwd/change-pwd-page.vue')
+      },
+    ]
+  },
+
+
+  // 登录相关
   {
     path: '/login',
     name: 'login',
@@ -27,6 +210,7 @@ export default [
     },
     component: () => import('@/view/login/login.vue')
   },
+  //首页-数据统计
   {
     path: '/',
     name: '_home',
@@ -41,7 +225,7 @@ export default [
         path: '/home',
         name: 'home',
         meta: {
-          hideInMenu: true,
+          hideInMenu: false,
           title: '首页',
           notCache: true,
           icon: 'md-home'
@@ -50,34 +234,25 @@ export default [
       }
     ]
   },
-  {
-    path: '',
-    name: 'doc',
-    meta: {
-      title: '文档',
-      href: 'https://lison16.github.io/iview-admin-doc/#/',
-      icon: 'ios-book'
-    }
-  },
-  {
-    path: '/join',
-    name: 'join',
-    component: Main,
-    meta: {
-      hideInBread: true
-    },
-    children: [
-      {
-        path: 'join_page',
-        name: 'join_page',
-        meta: {
-          icon: '_qq',
-          title: 'QQ群'
-        },
-        component: () => import('@/view/join-page.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/join',
+  //   name: 'join',
+  //   component: Main,
+  //   meta: {
+  //     hideInBread: true
+  //   },
+  //   children: [
+  //     {
+  //       path: 'join_page',
+  //       name: 'join_page',
+  //       meta: {
+  //         icon: '_qq',
+  //         title: 'QQ群'
+  //       },
+  //       component: () => import('@/view/join-page.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/message',
     name: 'message',
@@ -235,15 +410,15 @@ export default [
         },
         component: () => import('@/view/update/update-table.vue')
       },
-      {
-        path: 'update_paste_page',
-        name: 'update_paste_page',
-        meta: {
-          icon: 'md-clipboard',
-          title: '粘贴表格数据'
-        },
-        component: () => import('@/view/update/update-paste.vue')
-      }
+      // {
+      //   path: 'update_paste_page',
+      //   name: 'update_paste_page',
+      //   meta: {
+      //     icon: 'md-clipboard',
+      //     title: '粘贴表格数据'
+      //   },
+      //   component: () => import('@/view/update/update-paste.vue')
+      // }
     ]
   },
   {
@@ -275,103 +450,103 @@ export default [
       }
     ]
   },
-  {
-    path: '/tools_methods',
-    name: 'tools_methods',
-    meta: {
-      hideInBread: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'tools_methods_page',
-        name: 'tools_methods_page',
-        meta: {
-          icon: 'ios-hammer',
-          title: '工具方法',
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/tools-methods/tools-methods.vue')
-      }
-    ]
-  },
-  {
-    path: '/i18n',
-    name: 'i18n',
-    meta: {
-      hideInBread: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'i18n_page',
-        name: 'i18n_page',
-        meta: {
-          icon: 'md-planet',
-          title: 'i18n - {{ i18n_page }}'
-        },
-        component: () => import('@/view/i18n/i18n-page.vue')
-      }
-    ]
-  },
-  {
-    path: '/error_store',
-    name: 'error_store',
-    meta: {
-      hideInBread: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'error_store_page',
-        name: 'error_store_page',
-        meta: {
-          icon: 'ios-bug',
-          title: '错误收集'
-        },
-        component: () => import('@/view/error-store/error-store.vue')
-      }
-    ]
-  },
-  {
-    path: '/error_logger',
-    name: 'error_logger',
-    meta: {
-      hideInBread: true,
-      hideInMenu: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'error_logger_page',
-        name: 'error_logger_page',
-        meta: {
-          icon: 'ios-bug',
-          title: '错误收集'
-        },
-        component: () => import('@/view/single-page/error-logger.vue')
-      }
-    ]
-  },
-  {
-    path: '/directive',
-    name: 'directive',
-    meta: {
-      hideInBread: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'directive_page',
-        name: 'directive_page',
-        meta: {
-          icon: 'ios-navigate',
-          title: '指令'
-        },
-        component: () => import('@/view/directive/directive.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/tools_methods',
+  //   name: 'tools_methods',
+  //   meta: {
+  //     hideInBread: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'tools_methods_page',
+  //       name: 'tools_methods_page',
+  //       meta: {
+  //         icon: 'ios-hammer',
+  //         title: '工具方法',
+  //         beforeCloseName: 'before_close_normal'
+  //       },
+  //       component: () => import('@/view/tools-methods/tools-methods.vue')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/i18n',
+  //   name: 'i18n',
+  //   meta: {
+  //     hideInBread: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'i18n_page',
+  //       name: 'i18n_page',
+  //       meta: {
+  //         icon: 'md-planet',
+  //         title: 'i18n - {{ i18n_page }}'
+  //       },
+  //       component: () => import('@/view/i18n/i18n-page.vue')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/error_store',
+  //   name: 'error_store',
+  //   meta: {
+  //     hideInBread: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'error_store_page',
+  //       name: 'error_store_page',
+  //       meta: {
+  //         icon: 'ios-bug',
+  //         title: '错误收集'
+  //       },
+  //       component: () => import('@/view/error-store/error-store.vue')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/error_logger',
+  //   name: 'error_logger',
+  //   meta: {
+  //     hideInBread: true,
+  //     hideInMenu: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'error_logger_page',
+  //       name: 'error_logger_page',
+  //       meta: {
+  //         icon: 'ios-bug',
+  //         title: '错误收集'
+  //       },
+  //       component: () => import('@/view/single-page/error-logger.vue')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/directive',
+  //   name: 'directive',
+  //   meta: {
+  //     hideInBread: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'directive_page',
+  //       name: 'directive_page',
+  //       meta: {
+  //         icon: 'ios-navigate',
+  //         title: '指令'
+  //       },
+  //       component: () => import('@/view/directive/directive.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/multilevel',
     name: 'multilevel',
@@ -432,37 +607,37 @@ export default [
       }
     ]
   },
-  {
-    path: '/argu',
-    name: 'argu',
-    meta: {
-      hideInMenu: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'params/:id',
-        name: 'params',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ params }}-${route.params.id}`,
-          notCache: true,
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/argu-page/params.vue')
-      },
-      {
-        path: 'query',
-        name: 'query',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ query }}-${route.query.id}`,
-          notCache: true
-        },
-        component: () => import('@/view/argu-page/query.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/argu',
+  //   name: 'argu',
+  //   meta: {
+  //     hideInMenu: true
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'params/:id',
+  //       name: 'params',
+  //       meta: {
+  //         icon: 'md-flower',
+  //         title: route => `{{ params }}-${route.params.id}`,
+  //         notCache: true,
+  //         beforeCloseName: 'before_close_normal'
+  //       },
+  //       component: () => import('@/view/argu-page/params.vue')
+  //     },
+  //     {
+  //       path: 'query',
+  //       name: 'query',
+  //       meta: {
+  //         icon: 'md-flower',
+  //         title: route => `{{ query }}-${route.query.id}`,
+  //         notCache: true
+  //       },
+  //       component: () => import('@/view/argu-page/query.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/401',
     name: 'error_401',
@@ -486,5 +661,7 @@ export default [
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
-  }
+  },
+
+
 ]

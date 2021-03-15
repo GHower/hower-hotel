@@ -11,7 +11,7 @@ export default {
   img_cropper_page: '图片编辑器',
   update: '上传数据',
   join_page: 'QQ群',
-  doc: '文档',
+
   update_table_page: '上传CSV文件',
   update_paste_page: '粘贴表格数据',
   multilevel: '多级菜单',
@@ -42,5 +42,30 @@ export default {
   tree_table_page: '树状表格',
   org_tree_page: '组织结构树',
   drag_drawer_page: '可拖动抽屉',
-  tree_select_page: '树状下拉选择器'
+  tree_select_page: '树状下拉选择器',
+
+
+  // 房间相关
+  rooms_status_page:'房间状态',
+  // 订单
+  order_info_page: '订单',
+  // 会员/客户管理
+  customer_manage_page:'会员管理',
+  // 报表管理
+  report_forms:'报表',
+  financial_statement_page:'财务报表',
+  today_customer_page:'今日住客报表',
+  // 后台管理
+  back_manage:'后台管理',
+  staff_manage_page:'人员管理',
+  dep_manage_page:'部门管理',
+  // 统计中心
+  statistics_center:'统计中心',
+  rental_page:'租住统计',
+  revenue_page:'收支统计',
+  // 个人中心
+  personal_center:'个人中心',
+  personal_info_page:'个人资料',
+  change_pwd_page:'修改密码',
+
 }

@@ -5,6 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { on, off } from '@/libs/tools'
+// 数据的图
 export default {
   name: 'serviceRequests',
   data () {
