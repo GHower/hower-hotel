@@ -21,7 +21,7 @@
             <a href="javascript:" @click="showModal(row.identity)">{{row.identity}}</a>
           </template>
           <template slot-scope="{ row }" slot="vId">
-            <span>{{vipMap[row.vId].name+'会员'}}</span>
+            <span>{{vipMap.filter(e=>e.id===row.vId)[0].name+'会员'}}</span>
           </template>
           <template slot-scope="{ row }" slot="sex">
             {{ row.sex===1 ? '男':'女'}}
@@ -43,19 +43,58 @@
     <Modal
       title="客户详情"
       v-model="modal.open"
+      width="300"
       class-name="vertical-center-modal">
       <div>
-        <Row>
-          <Col span="12">
-            <span class="modal_label">证件号码</span><span>{{modal.detail.identity}}</span>
+        <Row class="modal_row">
+          <Col span="24">
+            证件号码
+            <Input size="small" type="text" style="width: auto" class="modal_label"
+                   v-model="modal.detail.identity"
+                   :disabled="modal.supportEdit"/>
           </Col>
-          <Col span="12">
-            <span class="modal_label">姓名</span><span>{{modal.detail.name}}</span>
+        </Row>
+        <Row class="modal_row">
+          <Col span="24">
+            会员等级
+            <Select size="small" style="width: auto" class="modal_label"
+                    v-model="modal.detail.vId"
+                    :disabled="modal.supportEdit">
+              <Option v-for="(item,idx) in vipMap" :value="idx+1" :label="item.name+'会员'"></Option>
+            </Select>
+          </Col>
+        </Row>
+        <Row class="modal_row">
+          <Col span="24">
+            姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名
+            <Input size="small" type="text" style="width: auto" class="modal_label"
+                   v-model="modal.detail.name"
+                   :disabled="modal.supportEdit"/>
+          </Col>
+        </Row>
+
+        <Row class="modal_row">
+          <Col span="24">
+            性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别
+            <Select size="small" style="width: auto" class="modal_label"
+                    v-model="modal.detail.sex"
+                    :disabled="modal.supportEdit">
+              <Option :value="1" :key="1">男</Option>
+              <Option :value="0" :key="0">女</Option>
+            </Select>
+          </Col>
+        </Row>
+        <Row class="modal_row">
+          <Col span="24">
+            联系方式
+            <Input size="small" type="text" style="width: auto" class="modal_label"
+                   v-model="modal.detail.contact"
+                   :disabled="modal.supportEdit"/>
           </Col>
         </Row>
       </div>
       <div slot="footer">
-        <Button @click="modal.supportEdit=true">启用修改</Button>
+        <Button @click="modal.supportEdit=false">启用修改</Button>
         <Button type="primary" @click="save">保存</Button>
       </div>
     </Modal>
@@ -92,7 +131,7 @@
             title: '性别'
           },
           {
-            key:'action',
+            key: 'action',
             title: '操作',
             slot: 'action',
             width: 140,
@@ -101,32 +140,32 @@
         ],
         customer: [
           {
-            identity: 441222200003150909,
+            identity: '441222200003150909',
             name: '亚索',
             vId: 1,
             contact: 13612345678,
             sex: 1,
           },
           {
-            identity: 441222200003150919,
+            identity: '441222200003150919',
             name: '瑞文',
             vId: 2,
             contact: 13612345678,
             sex: 0,
           },
         ],
-        loading:false,
-        vipMap: {},
+        loading: false,
+        vipMap: [],
         // 查找条件
         searchKey: '',
         searchValue: '',
         //弹框
-        modal:{
-          open:false,
+        modal: {
+          open: false,
           subLoading: false,
           delLoading: false,
-          supportEdit:false,
-          detail:{},
+          supportEdit: true,
+          detail: {},
         },
       }
     },
@@ -137,7 +176,7 @@
       remove(index) {
 
       },
-      showModal (identity) {
+      showModal(identity) {
         console.log(identity)
         //todo: 获取用户更多详情信息
         this.modal.detail = {
@@ -147,10 +186,10 @@
           contact: 13612345678,
           sex: 0,
         };
-        this.modal.open=true;
+        this.modal.open = true;
       },
 
-      save(){
+      save() {
         //todo 将修改后的信息保存
       },
       handleSearch() {
@@ -163,16 +202,16 @@
         //TODO: p；页码
         console.log(p, '页')
       },
-      setDefaultSearchKey(){
+      setDefaultSearchKey() {
         this.searchKey = this.columns[0].key !== 'action' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')
       },
     },
     watch: {
-      columns (columns) {
+      columns(columns) {
         // this.handleColumns(columns)
         this.setDefaultSearchKey()
       },
-      value (val) {
+      value(val) {
         // this.handleTableData()
         // if (this.searchable) this.handleSearch()
       },
@@ -181,13 +220,13 @@
       // todo:获取基础数据
       this.loading = true;
       this.setDefaultSearchKey();
-      this.vipMap = {
-        1: {name: '一星', discount: 1.00},
-        2: {name: '二星', discount: 0.95},
-        3: {name: '三星', discount: 0.88},
-        4: {name: '四星', discount: 0.80},
-        5: {name: '五星', discount: 0.70},
-      };
+      this.vipMap = [
+        {id: 1, name: '一星', discount: 1.00},
+        {id: 2, name: '二星', discount: 0.95},
+        {id: 3, name: '三星', discount: 0.88},
+        {id: 4, name: '四星', discount: 0.80},
+        {id: 5, name: '五星', discount: 0.70},
+      ];
       this.loading = false;
     }
   }
@@ -214,18 +253,26 @@
       }
     }
   }
+
+  .modal_row {
+    margin: 4px 0;
+  }
+
   .ivu-table-overflowX::-webkit-scrollbar {
     height: 0;
   }
+
   .vertical-center-modal {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .ivu-modal {
       top: 0;
     }
   }
-  .modal_label{
+
+  .modal_label {
     margin: 0 10px;
   }
 </style>

@@ -20,10 +20,12 @@ import parentView from '@/components/parent-view'
 export default [
   // 房间相关
   {
-    path: '/rooms_status',
-    name: 'rooms_status',
+    path: '/hotel_manage',
+    name: 'hotel_manage',
     meta: {
       hideInBread: true,
+      title:'酒店管理',
+      icon: 'md-home',
     },
     component: Main,
     children: [
@@ -34,39 +36,17 @@ export default [
           icon: 'md-home',
           title: '房间状态'
         },
-        component: () => import('@/view/rooms-status/rooms-status-page.vue')
+        component: () => import('@/view/hotel-manage/rooms-status/rooms-status-page.vue')
       },
-    ]
-  },
-  // 订单相关
-  {
-    path: '/order',
-    name: 'order',
-    meta: {
-      hideInBread: true,
-    },
-    component: Main,
-    children: [
       {
         path: 'order_info_page',
         name: 'order_info_page',
         meta: {
           icon: 'md-home',
-          title: '订单信息'
+          title: '订单'
         },
-        component: () => import('@/view/order/order_info_page.vue')
+        component: () => import('@/view/hotel-manage/order/order_info_page.vue')
       },
-    ]
-  },
-  // 会员相关
-  {
-    path: '/customer',
-    name: 'customer',
-    meta: {
-      hideInBread: true,
-    },
-    component: Main,
-    children: [
       {
         path: 'customer_manage_page',
         name: 'customer_manage_page',
@@ -74,7 +54,7 @@ export default [
           icon: 'md-home',
           title: '会员管理'
         },
-        component: () => import('@/view/customer/customer_manage_page.vue')
+        component: () => import('@/view/hotel-manage/customer/customer_manage_page.vue')
       },
     ]
   },
@@ -132,42 +112,42 @@ export default [
         name: 'dep_manage_page',
         meta: {
           icon: 'ios-document',
-          title: '部门管理'
+          title: '查看部门结构'
         },
         component: () => import('@/view/back-manage/dep-manage/dep-manage-page.vue')
       }
     ]
   },
   // TODO:统计中心
-  {
-    path: '/statistics_center',
-    name: 'statistics_center',
-    meta: {
-      icon: 'ios-stats',
-      title: '统计中心'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'rental_page',
-        name: 'rental_page',
-        meta: {
-          icon: 'ios-document',
-          title: '租住统计'
-        },
-        component: () => import('@/view/statistics-center/rental/rental-page.vue')
-      },
-      {
-        path: 'revenue_page',
-        name: 'revenue_page',
-        meta: {
-          icon: 'ios-document',
-          title: '收支统计'
-        },
-        component: () => import('@/view/statistics-center/revenue-page/revenue-page.vue')
-      },
-    ]
-  },
+  // {
+  //   path: '/statistics_center',
+  //   name: 'statistics_center',
+  //   meta: {
+  //     icon: 'ios-stats',
+  //     title: '统计中心'
+  //   },
+  //   component: Main,
+  //   children: [
+  //     {
+  //       path: 'rental_page',
+  //       name: 'rental_page',
+  //       meta: {
+  //         icon: 'ios-document',
+  //         title: '租住统计'
+  //       },
+  //       component: () => import('@/view/statistics-center/rental/rental-page.vue')
+  //     },
+  //     {
+  //       path: 'revenue_page',
+  //       name: 'revenue_page',
+  //       meta: {
+  //         icon: 'ios-document',
+  //         title: '收支统计'
+  //       },
+  //       component: () => import('@/view/statistics-center/revenue-page/revenue-page.vue')
+  //     },
+  //   ]
+  // },
   //TODO: 个人中心
   {
     path: '/personal_center',

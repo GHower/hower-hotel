@@ -42,8 +42,6 @@
 </template>
 
 <script>
-  import {getTableData} from '@/api/data'
-
   export default {
     name: 'order_info',
     components: {},

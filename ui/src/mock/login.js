@@ -14,7 +14,7 @@ const USER_MAP = {
     token: 'admin',
     avatar: 'https://avatars0.githubusercontent.com/u/20942571?s=460&v=4'
   }
-}
+};
 
 export const login = req => {
   req = JSON.parse(req.body)
