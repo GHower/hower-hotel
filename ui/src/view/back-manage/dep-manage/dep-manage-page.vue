@@ -20,6 +20,7 @@
   import OrgView from './components/org-view'
   import ZoomController from './components/zoom-controller'
   import './index.less'
+
   const menuDic = {
     edit: '编辑部门',
     detail: '查看部门',
@@ -39,63 +40,83 @@
       }
     },
     computed: {
-      zoomHandled () {
+      zoomHandled() {
         return this.zoom / 100
       }
     },
     methods: {
-      handleMenuClick({ data, key }){
+      handleMenuClick({data, key}) {
         this.$Message.success({
           duration: 5,
           content: `点击了《${data.label}》节点的'${menuDic[key]}'菜单`
         })
       },
-      getDepartmentData () {
+      getDepartmentData() {
         // getOrgData().then(res => {
         //   const { data } = res
         //   this.data = data
         // })
-        this.data={
-          id: 0,
-          label: 'XXX科技有限公司',
+        this.data = {
+          id: 1,
+          label: '豪尔精品酒店',
           children: [
             {
               id: 2,
-              label: '产品研发部',
+              label: '行政部',
               children: [
                 {
-                  id: 5,
-                  label: '研发-前端'
+                  id: 21,
+                  label: '后勤保障'
                 }, {
-                  id: 6,
-                  label: '研发-后端'
+                  id: 22,
+                  label: '涉外经营'
                 }, {
-                  id: 9,
-                  label: 'UI设计'
+                  id: 23,
+                  label: '项目承包'
                 }, {
-                  id: 10,
-                  label: '产品经理'
+                  id: 24,
+                  label: '报批及复验'
                 }
               ]
             },
             {
               id: 3,
-              label: '销售部',
+              label: '财务部',
               children: [
                 {
-                  id: 7,
-                  label: '销售一部'
+                  id: 31,
+                  label: '财务计划、监督'
                 }, {
-                  id: 8,
-                  label: '销售二部'
+                  id: 32,
+                  label: '资金规划'
                 }
               ]
             },
             {
               id: 4,
-              label: '财务部'
+              label: '工程部',
+              children:[
+                {
+                  id:41,
+                  label:'设备监管',
+                },
+              ]
             }, {
-              id: 11,
+              id: 5,
+              label: '客房部',
+              children:[
+                {
+                  id:51,
+                  label:'客房销售'
+                },
+                {
+                  id:52,
+                  label:'客房保洁'
+                },
+              ]
+            },
+            {
+              id: 6,
               label: 'HR人事'
             }
           ]

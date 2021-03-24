@@ -8,6 +8,9 @@ import { on, off } from '@/libs/tools'
 // 数据的图
 export default {
   name: 'serviceRequests',
+  props: {
+    text: String,
+  },
   data () {
     return {
       dom: null
@@ -20,6 +23,10 @@ export default {
   },
   mounted () {
     const option = {
+      title: {
+        text: this.text,
+        x: 'center'
+      },
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -30,7 +37,7 @@ export default {
         }
       },
       grid: {
-        top: '3%',
+        // top: '3%',
         left: '1.2%',
         right: '1%',
         bottom: '3%',
@@ -101,7 +108,7 @@ export default {
           data: [820, 645, 546, 745, 872, 624, 258]
         }
       ]
-    }
+    };
     this.$nextTick(() => {
       this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)

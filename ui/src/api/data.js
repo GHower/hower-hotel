@@ -1,19 +1,47 @@
 import axios from '@/libs/api.request'
 // 各种数据交互接口
 
-export const getTableData = () => {
+export const getCustomerData = (params) => {
   return axios.request({
-    url: 'get_table_data',
-    method: 'get'
+    url: '/customerInfo/page',
+    method: 'get',
+    params:params
   })
-}
+};
+export const getCustomerDataById = (params) => {
+  return axios.request({
+    url: '/customerInfo/',
+    method: 'get',
+    params:params
+  })
+};
+export const postCustomerData = (data) => {
+  return axios.request({
+    url: '/customerInfo/post',
+    method: 'post',
+    data:data
+  })
+};
+export const getCustomerOfSearch = (params) => {
+  return axios.request({
+    url: '/customerInfo/search',
+    method: 'get',
+    params:params
+  })
+};
+export const getCustomerVip = () => {
+  return axios.request({
+    url: '/customerVip/list',
+    method: 'get',
+  })
+};
 
 export const getDragList = () => {
   return axios.request({
     url: 'get_drag_list',
     method: 'get'
   })
-}
+};
 
 export const errorReq = () => {
   return axios.request({

@@ -22,7 +22,8 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         //
-      }
+      },
+      withCredentials:false
     }
     return config
   }
@@ -46,7 +47,7 @@ class HttpRequest {
     })
     // 响应拦截
     instance.interceptors.response.use(res => {
-      this.destroy(url)
+      // this.destroy(url)
       const { data, status } = res
       return { data, status }
     }, error => {
@@ -65,7 +66,9 @@ class HttpRequest {
     })
   }
   request (options) {
-    const instance = axios.create()
+    const instance = axios.create({
+      withCredentials:false
+    });
     options = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance, options.url)
     return instance(options)

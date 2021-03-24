@@ -17,7 +17,8 @@
                :style="{backgroundColor:getBgColor(_item.status)}"
                @click="showDrawer"
           >
-            <span class="room_number">{{_item.room_number}}</span>
+            <p class="room_number">{{_item.room_number}}</p>
+            <p>张三</p>
           </Button>
         </div>
       </div>
@@ -292,6 +293,7 @@
     width: 128px;
     height: 70px;
     margin: 5px;
+    border-radius: unset;
     display: inline-block;
   }
   .room_number{
