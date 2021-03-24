@@ -29,52 +29,45 @@ export const getCustomerOfSearch = (params) => {
     params:params
   })
 };
+// 员工
+export const getStaffInfoPage = (params) => {
+  return axios.request({
+    url: '/staffInfo/page',
+    method: 'get',
+    params:params
+  })
+};
+//部门结构
+export const getDepartmentTree = (params) => {
+  return axios.request({
+    url: '/departmentInfo/tree',
+    method: 'get',
+    params:params
+  })
+};
+export const getDepartmentById = (id) => {
+  return axios.request({
+    url: '/departmentInfo/'+id,
+    method: 'get',
+  })
+};
+export const postDepartment = (data) => {
+  return axios.request({
+    url: '/departmentInfo',
+    method: 'post',
+    data:data
+  })
+};
+//Map映射的数据
 export const getCustomerVip = () => {
   return axios.request({
     url: '/customerVip/list',
     method: 'get',
   })
 };
-
-export const getDragList = () => {
+export const getDepList= () => {
   return axios.request({
-    url: 'get_drag_list',
-    method: 'get'
+    url: '/departmentInfo/list',
+    method: 'get',
   })
 };
-
-export const errorReq = () => {
-  return axios.request({
-    url: 'error_url',
-    method: 'post'
-  })
-}
-
-export const saveErrorLogger = info => {
-  return axios.request({
-    url: 'save_error_logger',
-    data: info,
-    method: 'post'
-  })
-}
-
-export const uploadImg = formData => {
-  return axios.request({
-    url: 'image/upload',
-    data: formData
-  })
-}
-
-export const getOrgData = () => {
-  return axios.request({
-    url: 'get_org_data',
-    method: 'get'
-  })
-}
-
-export const getTreeSelectData = () => {
-  return axios.request({
-    url: 'get_tree_select_data',
-    method: 'get'
-  })
-}

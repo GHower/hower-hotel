@@ -13,6 +13,11 @@
         ></org-view>
       </div>
     </div>
+    <Modal v-model="Modal.open" :title="Modal.title"
+        @on-ok="submitData" @on-cancel="resetModalData" width="300">
+      <span v-if="Modal.data.id">部门ID</span><Input type="text" v-model="Modal.data.id" v-if="Modal.data.id" disabled/>
+      <span >部门名称</span><Input type="text" v-model="Modal.data.name"/>
+    </Modal>
   </Card>
 </template>
 
@@ -20,13 +25,7 @@
   import OrgView from './components/org-view'
   import ZoomController from './components/zoom-controller'
   import './index.less'
-
-  const menuDic = {
-    edit: '编辑部门',
-    detail: '查看部门',
-    new: '新增子部门',
-    delete: '删除部门'
-  };
+  import {getDepartmentTree,postDepartment} from '@/api/data'
   export default {
     name: "staff-manage-page",
     components: {
@@ -36,7 +35,23 @@
     data() {
       return {
         data: null,
-        zoom: 100
+        zoom: 100,
+        Modal:{
+          open:false,
+          title:'',
+          data:{
+            id:'',
+            pid:'',
+            name:'',
+            status:1,
+          }
+        },
+        menuDic:{
+          edit: '编辑部门',
+          // detail: '查看部门',
+          new: '新增子部门',
+          delete: '删除部门'
+        }
       }
     },
     computed: {
@@ -45,82 +60,57 @@
       }
     },
     methods: {
+      checkAction(){
+
+      },
       handleMenuClick({data, key}) {
         this.$Message.success({
           duration: 5,
-          content: `点击了《${data.label}》节点的'${menuDic[key]}'菜单`
+          content: `点击了《${data.name}》节点的'${this.menuDic[key]}'菜单`
+        });
+        this.Modal.title = this.menuDic[key];
+        switch (key) {
+          case 'edit':this.edit(data);break;
+          case 'new':this.addSubDep(data);break;
+          case 'delete':this.delDep(data);break;
+        }
+      },
+      edit(data){
+        this.Modal.open =true;
+        this.Modal.data = data;
+      },
+      addSubDep(data){
+        this.Modal.open =true;
+        this.Modal.data.pid = data.id;
+      },
+      delDep(data){
+        this.$Modal.confirm({
+          title:'删除部门',
+          content:'确定删除该部门吗?',
+          onOk(){
+            data.status=0;
+            postDepartment(data).then(res=>{
+            }).catch(err=>{})
+          },
+          onCancel(){
+          }
+        });
+      },
+      submitData(){
+        postDepartment(this.Modal.data).then(res=>{
+          this.$Message.success({
+            duration: 3,
+            content: `修改成功!`
+          });
         })
       },
+      resetModalData(){
+        this.Modal.data={id:'',name:'',status:1};
+      },
       getDepartmentData() {
-        // getOrgData().then(res => {
-        //   const { data } = res
-        //   this.data = data
-        // })
-        this.data = {
-          id: 1,
-          label: '豪尔精品酒店',
-          children: [
-            {
-              id: 2,
-              label: '行政部',
-              children: [
-                {
-                  id: 21,
-                  label: '后勤保障'
-                }, {
-                  id: 22,
-                  label: '涉外经营'
-                }, {
-                  id: 23,
-                  label: '项目承包'
-                }, {
-                  id: 24,
-                  label: '报批及复验'
-                }
-              ]
-            },
-            {
-              id: 3,
-              label: '财务部',
-              children: [
-                {
-                  id: 31,
-                  label: '财务计划、监督'
-                }, {
-                  id: 32,
-                  label: '资金规划'
-                }
-              ]
-            },
-            {
-              id: 4,
-              label: '工程部',
-              children:[
-                {
-                  id:41,
-                  label:'设备监管',
-                },
-              ]
-            }, {
-              id: 5,
-              label: '客房部',
-              children:[
-                {
-                  id:51,
-                  label:'客房销售'
-                },
-                {
-                  id:52,
-                  label:'客房保洁'
-                },
-              ]
-            },
-            {
-              id: 6,
-              label: 'HR人事'
-            }
-          ]
-        }
+        getDepartmentTree().then(res => {
+          this.data = res.data.result;
+        });
       }
     },
     mounted() {

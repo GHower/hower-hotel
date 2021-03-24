@@ -12,9 +12,18 @@
           <Icon type="search"/>&nbsp;&nbsp;搜索
         </Button>
       </div>
-      <Table :columns="tableTitle" :data="tableData">
+      <Table :columns="tableTitle" :data="tableData" :loading="tableLoading">
+        <template slot-scope="{ row,index }" slot="id">
+          <a href="javascript:" @click="edit(row.id,index)">{{row.id}}</a>
+        </template>
+        <template slot-scope="{ row,index }" slot="depId">
+          <span>{{mapDepName(row)}}</span>
+        </template>
+        <template slot-scope="{ row,index }" slot="shift">
+          <span>{{row.shift===0?'白班':'夜班'}}</span>
+        </template>
         <template slot-scope="{ row,index }" slot="action">
-          <Button type="primary" size="small" style="margin-right: 5px" @click="edit(index)">修改</Button>
+          <Button type="primary" size="small" style="margin-right: 5px" @click="edit(row.id,index)">修改</Button>
           <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
       </Table>
@@ -23,6 +32,12 @@
 </template>
 
 <script>
+  import {getDepList,getStaffInfoPage} from '@/api/data'
+
+  /**
+   * todo: 分页
+   * todo: 搜索、修改、删除、权限检查
+   */
   export default {
     name: "staff-manage-page",
     components: {},
@@ -31,19 +46,22 @@
         tableTitle: [
           {
             key: 'id',
+            slot:'id',
             title: '员工编号',
-          },
-          {
-            key: 'pId',
-            title: '所属部门'
-          },
-          {
-            key: 'shift',
-            title: '班次'
           },
           {
             key: 'name',
             title: '姓名',
+          },
+          {
+            key: 'depId',
+            slot:'depId',
+            title: '所属部门'
+          },
+          {
+            key: 'shift',
+            slot:'shift',
+            title: '班次'
           },
           {
             key: 'contact',
@@ -58,15 +76,20 @@
         tableData: [
           {
             id: 10001,
-            pId: '1',
+            depId: 2,
             name: '亚索',
             shift: '白班',
             email: '123123123@qq.com',
             contact: '13612345678',
           }
         ],
+
         searchKey:'',
         searchValue: '',
+
+        depList:[],
+        tableLoading:false,
+
       }
     },
     methods: {
@@ -98,12 +121,32 @@
       handleClear(e) {
 
       },
+      mapDepName(row){
+        return this.depList.filter((cur)=>cur.id===row.depId)[0].name
+      },
       setDefaultSearchKey(){
         this.searchKey = this.tableTitle[0].key !== 'action' ? this.tableTitle[0].key : (this.tableTitle.length > 1 ? this.tableTitle[1].key : '')
-      }
+      },
+    },
+    computed:{
+
     },
     mounted() {
+      this.tableLoading=true;
       this.setDefaultSearchKey();
+      getDepList().then(res=>{
+        this.depList = res.data.result;
+
+        getStaffInfoPage({
+          current:1
+        }).then(res=>{
+            this.tableData=res.data.result['records'];
+
+        }).catch(err=>{
+
+        });
+        this.tableLoading=false;
+      }).catch(err=>{})
     }
   }
 </script>

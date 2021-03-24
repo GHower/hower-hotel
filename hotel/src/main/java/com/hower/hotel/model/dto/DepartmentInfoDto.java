@@ -19,7 +19,6 @@ public class DepartmentInfoDto extends BaseModel {
     /**
      * 父级部门
      */
-    @JsonIgnore
     private Integer pId;
     /**
      * 部门名称

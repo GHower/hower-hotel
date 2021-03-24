@@ -25,10 +25,10 @@ const menuList = [
     key: 'edit',
     label: '编辑部门'
   },
-  {
-    key: 'detail',
-    label: '查看部门'
-  },
+  // {
+  //   key: 'detail',
+  //   label: '查看部门'
+  // },
   {
     key: 'new',
     label: '新增子部门'
@@ -94,7 +94,7 @@ export default {
           on-mousedown={event => event.stopPropagation()}
           on-contextmenu={this.contextmenu.bind(this, data)}
         >
-          {data.label}
+          {data.name}
           <dropdown
             trigger="custom"
             class="context-menu"

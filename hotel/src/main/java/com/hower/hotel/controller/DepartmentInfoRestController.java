@@ -1,25 +1,19 @@
 package com.hower.hotel.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hower.hotel.common.responses.ApiResponses;
 import com.hower.hotel.framework.controller.SuperController;
-import com.hower.hotel.model.dto.CustomerInfoDTO;
 import com.hower.hotel.model.dto.DepartmentInfoDto;
-import com.hower.hotel.model.entity.CustomerInfo;
 import com.hower.hotel.model.entity.DepartmentInfo;
 import com.hower.hotel.service.impl.DepartmentInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -44,15 +38,31 @@ public class DepartmentInfoRestController extends SuperController {
         return success(departmentInfoService.getById(id));
     }
 
+    @ApiOperation("")
+    @PostMapping("")
+    @CrossOrigin
+    public ApiResponses<Boolean> postById(@RequestBody DepartmentInfo departmentInfo) {
+        return success(departmentInfoService.saveOrUpdate(departmentInfo));
+    }
+
+    @ApiOperation("/list")
+    @GetMapping("/list")
+    public ApiResponses<List<DepartmentInfo>> getList() {
+        List<DepartmentInfo> infoList = departmentInfoService.list(
+                new QueryWrapper<DepartmentInfo>()
+                        .select("id", "name", "p_id", "status")
+                        .eq("p_id", 1)
+                        .eq("status", 1));
+        return success(infoList);
+    }
+
     @ApiOperation("/tree")
     @GetMapping("/tree")
     public ApiResponses<DepartmentInfoDto> getTree() {
         List<DepartmentInfoDto> list = new ArrayList<>();
-        departmentInfoService.list()
+        departmentInfoService.list(new QueryWrapper<DepartmentInfo>().eq("status", 1))
                 .forEach(e -> list.add(e.convert(DepartmentInfoDto.class)));
         DepartmentInfoDto departmentInfos = listToTree(list.get(0), list);
-        System.out.println(departmentInfos);
-
         return success(departmentInfos);
     }
 
@@ -66,8 +76,8 @@ public class DepartmentInfoRestController extends SuperController {
         });
         if (result.size() > 0) {
             root.setChildren(result);
-            for (DepartmentInfoDto d: result){
-                listToTree(d,list);
+            for (DepartmentInfoDto d : result) {
+                listToTree(d, list);
             }
         }
         return root;
