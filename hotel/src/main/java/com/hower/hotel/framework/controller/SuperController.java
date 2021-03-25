@@ -59,6 +59,6 @@ public class SuperController {
     }
 
     public <T> IPage<T> getPage(){
-        return new Page<>();
+        return new Page<T>();
     }
 }

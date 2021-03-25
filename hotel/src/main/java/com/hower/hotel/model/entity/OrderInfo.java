@@ -26,18 +26,21 @@ public class OrderInfo extends BaseModel {
     /**
      * 房间ID
      */
-    private Integer rtId;
+    private Integer rId;
 
     /**
      * 客户ID
      */
-    private Integer cId;
+    private String cId;
 
     /**
      * 订单操作员ID
      */
     private Integer sId;
-
+    /**
+     * 订单下的住客信息
+     */
+    private String guestId;
     /**
      * 入住时间
      */
@@ -74,11 +77,12 @@ public class OrderInfo extends BaseModel {
     private LocalDateTime updateTime;
 
 
-    public static final String RT_ID = "rt_id";
+    public static final String R_ID = "r_id";
 
     public static final String C_ID = "c_id";
 
     public static final String S_ID = "s_id";
+    public static final String GUEST_ID = "guest_id";
 
     public static final String IN_TIME = "in_time";
 

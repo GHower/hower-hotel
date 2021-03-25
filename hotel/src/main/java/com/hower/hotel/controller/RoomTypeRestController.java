@@ -5,6 +5,7 @@ import com.hower.hotel.common.responses.ApiResponses;
 import com.hower.hotel.framework.controller.SuperController;
 import com.hower.hotel.model.entity.RoomType;
 import com.hower.hotel.service.impl.RoomTypeServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author Ghower
  * @since 2021-03-21
  */
+@Api(tags="房间类型")
 @RestController
 @RequestMapping("/roomType")
 public class RoomTypeRestController extends SuperController {

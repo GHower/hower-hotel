@@ -37,6 +37,13 @@ export const getStaffInfoPage = (params) => {
     params:params
   })
 };
+export const getStaffInfoSearch = (params) => {
+  return axios.request({
+    url: '/staffInfo/search',
+    method: 'get',
+    params:params
+  })
+};
 //部门结构
 export const getDepartmentTree = (params) => {
   return axios.request({
@@ -58,6 +65,36 @@ export const postDepartment = (data) => {
     data:data
   })
 };
+// 房间信息
+export const getRoomInfoList = (params) => {
+  return axios.request({
+    url: '/roomInfo/list',
+    method: 'get',
+    params:params
+  })
+};
+export const getRoomInfoListDTO = (params) => {
+  return axios.request({
+    url: '/roomInfo/listDTO',
+    method: 'get',
+    params:params
+  })
+};
+//订单信息
+export const getOrderByRoomId = (id) => {
+  return axios.request({
+    url: '/orderInfo/'+id,
+    method: 'get',
+  })
+};
+export const getOrderPage = (params) => {
+  return axios.request({
+    url: '/orderInfo/page',
+    method: 'get',
+    params:params
+  })
+};
+
 //Map映射的数据
 export const getCustomerVip = () => {
   return axios.request({
@@ -69,5 +106,12 @@ export const getDepList= () => {
   return axios.request({
     url: '/departmentInfo/list',
     method: 'get',
+  })
+};
+export const getRoomTypeList = (params) => {
+  return axios.request({
+    url: '/roomType/list',
+    method: 'get',
+    params:params
   })
 };

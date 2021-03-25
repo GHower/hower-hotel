@@ -3,7 +3,7 @@
     <div>
       <div class="search-con search-con-top">
         <Select v-model="searchKey" class="search-col">
-          <Option v-for="item in tableTitle" v-if="item.key !== 'action'" :value="item.key"
+          <Option v-for="item in tableTitle" v-if="item.key ===  'id' ||item.key ===  'name'" :value="item.key"
                   :key="item.key">{{ item.title }}
           </Option>
         </Select>
@@ -27,16 +27,22 @@
           <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
       </Table>
+      <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+          <Page :total="page.total" :current="page.current"
+                show-elevator
+                @on-change="changePage"></Page>
+        </div>
+      </div>
     </div>
   </Card>
 </template>
 
 <script>
-  import {getDepList,getStaffInfoPage} from '@/api/data'
+  import {getDepList, getStaffInfoPage, getStaffInfoSearch} from '@/api/data'
 
   /**
-   * todo: 分页
-   * todo: 搜索、修改、删除、权限检查
+   * todo: 修改、删除、权限检查
    */
   export default {
     name: "staff-manage-page",
@@ -46,7 +52,7 @@
         tableTitle: [
           {
             key: 'id',
-            slot:'id',
+            slot: 'id',
             title: '员工编号',
           },
           {
@@ -55,12 +61,12 @@
           },
           {
             key: 'depId',
-            slot:'depId',
+            slot: 'depId',
             title: '所属部门'
           },
           {
             key: 'shift',
-            slot:'shift',
+            slot: 'shift',
             title: '班次'
           },
           {
@@ -83,13 +89,18 @@
             contact: '13612345678',
           }
         ],
-
-        searchKey:'',
+        searchKey: '',
         searchValue: '',
-
-        depList:[],
-        tableLoading:false,
-
+        depList: [{
+          id: '', name: '', status: 1
+        }],
+        tableLoading: false,
+        page: {
+          current: 1,
+          pageSize: 10,
+          total: 10,
+          isSearch: false,
+        }
       }
     },
     methods: {
@@ -116,37 +127,61 @@
         }
       },
       handleSearch() {
-        console.log(this.value)
+        this.tableLoading = true;
+        getStaffInfoSearch({
+          column: this.searchKey,
+          value: this.searchValue,
+        }).then(res => {
+          this.tableData = res.data.result['records'];
+          this.page.current = res.data.result['current'];
+          this.page.total = res.data.result['total'];
+          this.page.isSearch = true;
+          this.tableLoading = false;
+        }).catch(err => {
+        });
       },
       handleClear(e) {
-
+        if (this.searchValue === '') {
+          this.getStaffInfoPage(1);
+          this.page.isSearch = false;
+        }
       },
-      mapDepName(row){
-        return this.depList.filter((cur)=>cur.id===row.depId)[0].name
+      mapDepName(row) {
+        return this.depList.filter((cur) => cur.id === row.depId)[0].name
       },
-      setDefaultSearchKey(){
+      DepName2Id(row) {
+        return this.depList.filter((cur) => cur.name === row.name)[0].id
+      },
+      setDefaultSearchKey() {
         this.searchKey = this.tableTitle[0].key !== 'action' ? this.tableTitle[0].key : (this.tableTitle.length > 1 ? this.tableTitle[1].key : '')
       },
-    },
-    computed:{
-
-    },
-    mounted() {
-      this.tableLoading=true;
-      this.setDefaultSearchKey();
-      getDepList().then(res=>{
-        this.depList = res.data.result;
-
+      changePage(p) {
+        this.page.current = p;
+        if (this.page.isSearch) {
+          this.handleSearch(this.page.current)
+        } else {
+          this.getStaffInfoPage(p);
+        }
+      },
+      getStaffInfoPage(current){
         getStaffInfoPage({
-          current:1
-        }).then(res=>{
-            this.tableData=res.data.result['records'];
-
-        }).catch(err=>{
-
-        });
-        this.tableLoading=false;
-      }).catch(err=>{})
+          current: current
+        }).then(res => {
+          this.tableData = res.data.result['records'];
+          this.page.current = res.data.result['current'];
+          this.page.total = res.data.result['total'];
+          this.tableLoading = false;
+        }).catch(err => {});
+      }
+    },
+    computed: {},
+    mounted() {
+      this.tableLoading = true;
+      this.setDefaultSearchKey();
+      getDepList().then(res => {
+        this.depList = res.data.result;
+        this.getStaffInfoPage(1);
+      }).catch(err => {})
     }
   }
 </script>
@@ -155,6 +190,7 @@
   .ivu-table-overflowX::-webkit-scrollbar {
     height: 0;
   }
+
   .search-con {
     padding: 10px 0;
 

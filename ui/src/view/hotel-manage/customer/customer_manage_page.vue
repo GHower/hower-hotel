@@ -181,7 +181,6 @@
         this.modal.open = true;
       },
       save() {
-        //todo 将修改后的信息保存
         this.modal.subLoading=true;
         postCustomerData(
           this.modal.detail
