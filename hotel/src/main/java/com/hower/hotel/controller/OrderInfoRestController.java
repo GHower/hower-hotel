@@ -14,7 +14,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -49,12 +54,15 @@ public class OrderInfoRestController extends SuperController {
 
     @ApiOperation("/")
     @PostMapping("/")
-    public ApiResponses<Boolean> getOrderById(OrderInfo orderInfo) {
+    @CrossOrigin
+    public ApiResponses<Boolean> postOrder(OrderInfo orderInfo) {
+        // TODO:订单生成，检查客户信息是否存在，不存在则创建，记录当前操作员
         return success(orderInfoService.saveOrUpdate(orderInfo));
     }
 
     /**
      * TODO：这是一个复杂SQL，应该用存储过程优化
+     *
      * @param orderInfo
      * @param current
      * @param pageSize
@@ -67,20 +75,10 @@ public class OrderInfoRestController extends SuperController {
             @RequestParam(required = false, defaultValue = "1") Integer current,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         IPage<OrderInfo> infoIPage = orderInfoService.page(new Page<OrderInfo>()
-                .setCurrent(current),new QueryWrapper<>(orderInfo));
+                .setCurrent(current), new QueryWrapper<>(orderInfo));
         List<OrderInfoDTO> result = new ArrayList<>();
         for (OrderInfo record : infoIPage.getRecords()) {
-            OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
-            RoomInfo roomInfo = roomInfoService.getById(record.getRId());
-            RoomType roomType = roomTypeService.getById(roomInfo.getTypeId());
-            StaffInfo staffInfo = staffInfoService.getById(record.getSId());
-            CustomerInfo customerInfo = customerInfoService.getById(record.getCId());
-            orderInfoDTO.setOrderInfo(record);
-            orderInfoDTO.setRoomType(roomType.getName());
-            orderInfoDTO.setRoomInfo(roomInfo);
-            orderInfoDTO.setStaffInfo(staffInfo);
-            orderInfoDTO.setCustomerInfo(customerInfo);
-            result.add(orderInfoDTO);
+            result.add(order2DTO(record));
         }
         IPage<OrderInfoDTO> iPage = new Page<OrderInfoDTO>();
         iPage.setRecords(result);
@@ -90,21 +88,67 @@ public class OrderInfoRestController extends SuperController {
         iPage.setTotal(infoIPage.getTotal());
         return success(iPage);
     }
+
+    @ApiOperation("/byRoom")
+    @GetMapping("/byRoom")
+    public ApiResponses<OrderInfoDTO> getOrderByRoomId(RoomInfo roomInfo) {
+        OrderInfo orderInfo = orderInfoService.getOne(
+                new QueryWrapper<>(new OrderInfo().setRId(roomInfo.getId())));
+        if (orderInfo == null) {
+            return success(new OrderInfoDTO());
+        }
+        return success(order2DTO(orderInfo));
+    }
+
     @ApiOperation("/detail")
     @GetMapping("/detail")
     public ApiResponses<OrderInfoDTO> getOrderPage(OrderInfo orderInfo) {
         OrderInfo infoIPage = orderInfoService.getOne(new QueryWrapper<>(orderInfo));
-        OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
-        RoomInfo roomInfo = roomInfoService.getById(infoIPage.getRId());
-        RoomType roomType = roomTypeService.getById(roomInfo.getTypeId());
-        StaffInfo staffInfo = staffInfoService.getById(infoIPage.getSId());
-        CustomerInfo customerInfo = customerInfoService.getById(infoIPage.getCId());
-        orderInfoDTO.setOrderInfo(infoIPage);
-        orderInfoDTO.setRoomType(roomType.getName());
-        orderInfoDTO.setRoomInfo(roomInfo);
-        orderInfoDTO.setStaffInfo(staffInfo);
-        orderInfoDTO.setCustomerInfo(customerInfo);
-        return success(orderInfoDTO);
+        return success(order2DTO(infoIPage));
     }
+    @ApiOperation("/today")
+    @GetMapping("/today")
+    public ApiResponses<List<OrderInfoDTO>> getOrderToday() {
+        List<OrderInfoDTO> result = new ArrayList<>();
+
+        List<OrderInfo> orderInfos = orderInfoService.list(new QueryWrapper<OrderInfo>()
+                .gt("in_time", getDate() + " 10:00:00")
+                .lt("out_time", getDate(1) + " 14:30:00"));
+        for (OrderInfo record : orderInfos) {
+            result.add(order2DTO(record));
+        }
+        return success(result);
+    }
+
+    private String getDate(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        return now.format(dateTimeFormatter);
+    }
+
+    private String getDate(Integer days){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        now = now.plusDays(days);
+        return now.format(dateTimeFormatter);
+    }
+
+    private OrderInfoDTO order2DTO(OrderInfo record) {
+        OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
+        RoomInfo roomInfo = roomInfoService.getById(record.getRId());
+        RoomType roomType = roomTypeService.getById(roomInfo.getTypeId());
+//        StaffInfo staffInfo = staffInfoService.getById(record.getSId());
+        CustomerInfo customerInfo = customerInfoService.getById(record.getCId());
+        Collection<CustomerInfo> customerInfos = customerInfoService.listByIds(Arrays.asList(record.getGuestId().split(",").clone()));
+        orderInfoDTO.setGuests((List<CustomerInfo>) customerInfos);
+        orderInfoDTO.setOrderInfo(record);
+        orderInfoDTO.setRoomType(roomType.getName());
+        orderInfoDTO.setPrice(roomType.getPrice());
+        orderInfoDTO.setRoomInfo(roomInfo);
+//        orderInfoDTO.setStaffInfo(staffInfo);
+        orderInfoDTO.setCustomerInfo(customerInfo);
+        return orderInfoDTO;
+    }
+
 }
 

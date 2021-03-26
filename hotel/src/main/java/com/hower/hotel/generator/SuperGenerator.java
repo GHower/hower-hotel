@@ -72,7 +72,7 @@ public class SuperGenerator  {
         List<TableFill> tableFillList = getTableFills();
         return new StrategyConfig()
                 .setCapitalMode(false)// 全局大写命名
-                .setTablePrefix("sys_")// 去除前缀
+//                .setTablePrefix("sys_")// 去除前缀
                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
                 //.setInclude(new String[] { "user" }) // 需要生成的表
                 //自定义实体父类

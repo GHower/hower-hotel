@@ -7,13 +7,15 @@ public class MysqlGeneratorTest {
     @Test
     public void generator() {
         MysqlGenerator mysqlGenerator = new MysqlGenerator();
-        mysqlGenerator.generator("customer_info");
-        mysqlGenerator.generator("customer_vip");
-        mysqlGenerator.generator("department_info");
-        mysqlGenerator.generator("order_info");
-        mysqlGenerator.generator("room_info");
-        mysqlGenerator.generator("room_type");
-        mysqlGenerator.generator("staff_info");
+        mysqlGenerator.generator("order_pay_info");
+
+//        mysqlGenerator.generator("customer_info");
+//        mysqlGenerator.generator("customer_vip");
+//        mysqlGenerator.generator("department_info");
+//        mysqlGenerator.generator("order_info");
+//        mysqlGenerator.generator("room_info");
+//        mysqlGenerator.generator("room_type");
+//        mysqlGenerator.generator("staff_info");
     }
     @Test
     public void generatorBySys() {

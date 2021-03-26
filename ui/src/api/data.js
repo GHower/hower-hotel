@@ -81,12 +81,6 @@ export const getRoomInfoListDTO = (params) => {
   })
 };
 //订单信息
-export const getOrderByRoomId = (id) => {
-  return axios.request({
-    url: '/orderInfo/'+id,
-    method: 'get',
-  })
-};
 export const getOrderPage = (params) => {
   return axios.request({
     url: '/orderInfo/page',
@@ -94,7 +88,28 @@ export const getOrderPage = (params) => {
     params:params
   })
 };
+export const getOrderByRoom = (params) => {
+  return axios.request({
+    url: '/orderInfo/byRoom',
+    method: 'get',
+    params:params
+  })
+};
+export const getOrderToday = (params) => {
+  return axios.request({
+    url: '/orderInfo/today',
+    method: 'get',
+    params:params
+  })
+};
 
+export const getOrderPayInfo = (params) => {
+  return axios.request({
+    url: '/orderPayInfo/',
+    method: 'get',
+    params:params
+  })
+};
 //Map映射的数据
 export const getCustomerVip = () => {
   return axios.request({

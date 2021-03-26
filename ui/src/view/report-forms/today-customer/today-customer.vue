@@ -23,31 +23,55 @@
 
 <script>
   import excel from '@/libs/excel'
+  import {getOrderToday} from '@/api/data'
+
   export default {
     name: "today-customer",
     components: {},
-    data(){
-      return{
-        tableTitle:[
-
+    data() {
+      return {
+        tableTitle: [
+          {
+            key: 'roomType',
+            title: '房型'
+          },
+          {
+            key: 'number',
+            title: '房间号'
+          },
+          {
+            key: 'name',
+            title: '住客姓名',
+          },
+          {
+            key: 'contact',
+            title: '联系方式',
+          },
+          {
+            key: 'sex',
+            title: '性别',
+          },
+          {
+            key: 'id',
+            title: '证件号码',
+          },
         ],
-        tableData:[
-
-        ],
-        exportLoading:false,
-
+        tableData: [],
+        exportLoading: false,
       }
     },
-    methods:{
-      exportExcel () {
+    methods: {
+      exportExcel() {
         if (this.tableData.length) {
           this.exportLoading = true;
+          let data_str = new Date().toLocaleDateString().replace(/\//g,"-")
+
           const params = {
-            title: ['一级分类', '二级分类', '三级分类'],
-            key: ['category1', 'category2', 'category3'],
+            title: ['房型', '房间号', '住客姓名', '联系方式', '性别', '证件号码'],
+            key: ['roomType', 'number', 'name', 'contact', 'sex', 'id'],
             data: this.tableData,
             autoWidth: true,
-            filename: '分类列表'
+            filename: '住客报表('+data_str+')'
           };
           excel.export_array_to_excel(params)
           this.exportLoading = false
@@ -55,14 +79,29 @@
           this.$Message.info('打印报表为空！')
         }
       },
-      getTodayCustomer(){
-
+      getTodayCustomer() {
+        getOrderToday({}).then(res => {
+          const result = res.data.result;
+          console.log(result);
+          let data = [];
+          result.forEach(e => {
+            e.guests.forEach(g => {
+              data.push({
+                ...g,
+                roomType: e.roomType,
+                number: e.roomInfo.number,
+                sex: g.sex === 1 ? '男' : '女',
+              })
+            })
+          });
+          this.tableData = data;
+        }).catch(err => {
+        })
       }
     },
-    watch:{
-
-    },
+    watch: {},
     mounted() {
+      this.getTodayCustomer();
     },
 
   }

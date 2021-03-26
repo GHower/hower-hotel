@@ -18,8 +18,10 @@ import java.util.List;
 public class OrderInfoDTO extends Convert {
     private OrderInfo orderInfo;//订单基础信息
     private CustomerInfo customerInfo;//预订人信息
-    private StaffInfo staffInfo;//操作员信息
+//    private StaffInfo staffInfo;//操作员信息
     private List<CustomerInfo> guests;//住客信息
-    private RoomInfo roomInfo;
+    private RoomInfo roomInfo;//房间信息
     private String roomType;//房间类型
+    private BigDecimal price;//房间类型
+
 }

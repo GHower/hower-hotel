@@ -229,7 +229,6 @@
         }else{
           return "暂无信息";
         }
-
       },
       setDefaultSearchKey() {
         this.searchKey = this.columns[0].key !== 'action' ? this.columns[0].key : (this.columns.length > 1 ? this.columns[1].key : '')

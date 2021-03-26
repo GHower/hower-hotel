@@ -33,7 +33,7 @@ export default [
         path: 'rooms_status_page',
         name: 'rooms_status_page',
         meta: {
-          icon: 'md-home',
+          icon: 'ios-apps',
           title: '房间状态'
         },
         component: () => import('@/view/hotel-manage/rooms-status/rooms-status-page.vue')
@@ -42,7 +42,7 @@ export default [
         path: 'order_info_page',
         name: 'order_info_page',
         meta: {
-          icon: 'md-home',
+          icon: 'md-menu',
           title: '订单'
         },
         component: () => import('@/view/hotel-manage/order/order_info_page.vue')
@@ -51,7 +51,7 @@ export default [
         path: 'customer_manage_page',
         name: 'customer_manage_page',
         meta: {
-          icon: 'md-home',
+          icon: 'ios-people-outline',
           title: '会员管理'
         },
         component: () => import('@/view/hotel-manage/customer/customer_manage_page.vue')
@@ -93,7 +93,7 @@ export default [
     path: '/back_manage',
     name: 'back_manage',
     meta: {
-      icon: 'ios-stats',
+      icon: 'logo-buffer',
       title: '后台管理'
     },
     component: Main,
@@ -102,7 +102,7 @@ export default [
         path: 'staff_manage_page',
         name: 'staff_manage_page',
         meta: {
-          icon: 'ios-document',
+          icon: 'ios-contacts',
           title: '人员管理'
         },
         component: () => import('@/view/back-manage/staff-manage/staff-manage-page.vue')
@@ -111,7 +111,7 @@ export default [
         path: 'dep_manage_page',
         name: 'dep_manage_page',
         meta: {
-          icon: 'ios-document',
+          icon: 'md-git-network',
           title: '查看部门结构'
         },
         component: () => import('@/view/back-manage/dep-manage/dep-manage-page.vue')
@@ -153,7 +153,7 @@ export default [
     path: '/personal_center',
     name: 'personal_center',
     meta: {
-      icon: 'ios-stats',
+      icon: 'md-person',
       title: '个人中心'
     },
     component: Main,

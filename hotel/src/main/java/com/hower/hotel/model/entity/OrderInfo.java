@@ -1,15 +1,20 @@
 package com.hower.hotel.model.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hower.hotel.framework.model.BaseModel;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Ghower
@@ -33,10 +38,10 @@ public class OrderInfo extends BaseModel {
      */
     private String cId;
 
-    /**
-     * 订单操作员ID
-     */
-    private Integer sId;
+//    /**
+//     * 订单操作员ID
+//     */
+//    private Integer sId;
     /**
      * 订单下的住客信息
      */
@@ -65,15 +70,20 @@ public class OrderInfo extends BaseModel {
      * 订单备注
      */
     private String remarcks;
-
+    /**
+     * 实付款金额
+     */
+    private BigDecimal payFact;
     /**
      * 订单创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 订单修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 
@@ -81,7 +91,7 @@ public class OrderInfo extends BaseModel {
 
     public static final String C_ID = "c_id";
 
-    public static final String S_ID = "s_id";
+//    public static final String S_ID = "s_id";
     public static final String GUEST_ID = "guest_id";
 
     public static final String IN_TIME = "in_time";
@@ -91,6 +101,8 @@ public class OrderInfo extends BaseModel {
     public static final String STATUS = "status";
 
     public static final String SOURCE = "source";
+
+    public static final String PAY_FACT = "pay_fact";
 
     public static final String REMARCKS = "remarcks";
 

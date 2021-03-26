@@ -397,3 +397,15 @@ export const setTitle = (routeItem, vm) => {
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
 }
+export const convertTimeFormat = (timeArray) =>{
+  if (timeArray && timeArray.length === 6) {
+    return timeArray[0] + "-"
+      + timeArray[1] + "-"
+      + timeArray[2] + " "
+      + timeArray[3] + ":"
+      + timeArray[4] + ":"
+      + timeArray[5];
+  }else{
+    return "暂无信息";
+  }
+};
