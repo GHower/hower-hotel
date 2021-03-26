@@ -7,8 +7,7 @@ public class MysqlGeneratorTest {
     @Test
     public void generator() {
         MysqlGenerator mysqlGenerator = new MysqlGenerator();
-        mysqlGenerator.generator("order_pay_info");
-
+//        mysqlGenerator.generator("order_pay_info");
 //        mysqlGenerator.generator("customer_info");
 //        mysqlGenerator.generator("customer_vip");
 //        mysqlGenerator.generator("department_info");
@@ -20,12 +19,12 @@ public class MysqlGeneratorTest {
     @Test
     public void generatorBySys() {
         MysqlGenerator mysqlGenerator = new MysqlGenerator();
-        mysqlGenerator.generator("sys_menu");
-        mysqlGenerator.generator("sys_menu_resource");
-        mysqlGenerator.generator("sys_resource");
-        mysqlGenerator.generator("sys_role");
-        mysqlGenerator.generator("sys_role_menu");
-        mysqlGenerator.generator("sys_role_resource");
-        mysqlGenerator.generator("sys_staff_role");
+//        mysqlGenerator.generator("sys_menu");
+//        mysqlGenerator.generator("sys_menu_resource");
+//        mysqlGenerator.generator("sys_resource");
+//        mysqlGenerator.generator("sys_role");
+//        mysqlGenerator.generator("sys_permission");
+//        mysqlGenerator.generator("sys_role_permission");
+//        mysqlGenerator.generator("sys_staff_role");
     }
 }

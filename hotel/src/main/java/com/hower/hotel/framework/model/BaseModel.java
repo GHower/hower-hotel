@@ -38,5 +38,6 @@ import lombok.NoArgsConstructor;
 public class BaseModel extends Convert {
 
     protected Integer id;
+    public static final String ID = "id";
 
 }

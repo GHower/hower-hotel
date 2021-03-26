@@ -27,7 +27,15 @@ public class SuperController {
     public <T> ApiResponses<T> success(T object) {
         return ApiResponses.<T>success(response, object);
     }
-
+    /**
+     * 失败返回
+     *
+     * @param object
+     * @return
+     */
+    public <T> ApiResponses<T> failure(T object) {
+        return ApiResponses.<T>success(response, object);
+    }
     /**
      * 成功返回
      *
@@ -57,6 +65,7 @@ public class SuperController {
     public ApiResponses<Void> success(HttpStatus status) {
         return ApiResponses.<Void>success(response, status);
     }
+
 
     public <T> IPage<T> getPage(){
         return new Page<T>();

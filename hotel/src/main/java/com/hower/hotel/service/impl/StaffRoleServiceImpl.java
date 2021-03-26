@@ -6,6 +6,8 @@ import com.hower.hotel.service.IStaffRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 'hower_hotel.staffdto' is not BASE TABLE 服务实现类

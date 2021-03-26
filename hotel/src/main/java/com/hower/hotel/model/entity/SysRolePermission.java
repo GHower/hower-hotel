@@ -12,23 +12,23 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Ghower
- * @since 2021-03-21
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_role_resource")
-public class RoleResource extends BaseModel {
+@TableName("sys_role_permission")
+public class SysRolePermission extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
+    private Integer permissionId;
+
     private Integer roleId;
 
-    private Integer resourceId;
 
+    public static final String PERMISSION_ID = "permission_id";
 
     public static final String ROLE_ID = "role_id";
-
-    public static final String RESOURCE_ID = "resource_id";
 
 }

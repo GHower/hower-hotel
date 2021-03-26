@@ -13,30 +13,25 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Ghower
- * @since 2021-03-21
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_resource")
-public class Resource extends BaseModel {
+@TableName("sys_token")
+public class SysToken extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 资源名称
+     * token
      */
-    private String resourceName;
+    private String token;
 
     /**
-     * 资源URL
+     * 用户id
      */
-    private String url;
-
-    /**
-     * 备注
-     */
-    private String remarks;
+    private Integer sId;
 
     /**
      * 创建时间
@@ -44,19 +39,17 @@ public class Resource extends BaseModel {
     private LocalDateTime createTime;
 
     /**
-     * 请求方式
+     * 过期时间
      */
-    private String method;
+    private LocalDateTime expiresTime;
 
 
-    public static final String RESOURCE_NAME = "resource_name";
+    public static final String TOKEN = "token";
 
-    public static final String URL = "url";
-
-    public static final String REMARKS = "remarks";
+    public static final String S_ID = "s_id";
 
     public static final String CREATE_TIME = "create_time";
 
-    public static final String METHOD = "method";
+    public static final String EXPIRES_TIME = "expires_time";
 
 }

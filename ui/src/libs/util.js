@@ -176,10 +176,10 @@ export const canTurnTo = (name, access, routes) => {
         return hasAccess(access, item)
       }
     })
-  }
+  };
 
   return routePermissionJudge(routes)
-}
+};
 
 /**
  * @param {String} url

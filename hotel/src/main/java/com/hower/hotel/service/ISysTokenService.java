@@ -1,6 +1,6 @@
 package com.hower.hotel.service;
 
-import com.hower.hotel.model.entity.RoleResource;
+import com.hower.hotel.model.entity.SysToken;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author Ghower
- * @since 2021-03-21
+ * @since 2021-03-26
  */
-public interface IRoleResourceService extends IService<RoleResource> {
+public interface ISysTokenService extends IService<SysToken> {
 
 }

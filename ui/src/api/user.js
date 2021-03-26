@@ -4,15 +4,23 @@ export const login = ({ userName, password }) => {
   const data = {
     userName,
     password
-  }
+  };
+  axios.request({
+    url: 'login',
+    data,
+    method: 'post'
+  }).then(res=>{
+    console.log(res.data)
+  });
   return axios.request({
     url: 'login',
     data,
     method: 'post'
   })
-}
+};
 
 export const getUserInfo = (token) => {
+  console.log("远程的调用user_info");
   return axios.request({
     url: 'get_info',
     params: {

@@ -12,29 +12,29 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Ghower
- * @since 2021-03-21
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_role_menu")
-public class RoleMenu extends BaseModel {
+@TableName("sys_permission")
+public class SysPermission extends BaseModel {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色ID
+     * 权限名称
      */
-    private Integer roleId;
+    private String permissionName;
 
     /**
-     * 菜单ID
+     * 权限
      */
-    private Integer menuId;
+    private String permission;
 
 
-    public static final String ROLE_ID = "role_id";
+    public static final String PERMISSION_NAME = "permission_name";
 
-    public static final String MENU_ID = "menu_id";
+    public static final String PERMISSION = "permission";
 
 }

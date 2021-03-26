@@ -1,6 +1,6 @@
 package com.hower.hotel.mapper;
 
-import com.hower.hotel.model.entity.RoleResource;
+import com.hower.hotel.model.entity.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author Ghower
- * @since 2021-03-21
+ * @since 2021-03-26
  */
-public interface RoleResourceMapper extends BaseMapper<RoleResource> {
+public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
 }

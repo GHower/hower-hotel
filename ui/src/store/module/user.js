@@ -39,7 +39,7 @@ export default {
       state.access = access
     },
     setToken (state, token) {
-      state.token = token
+      state.token = token;
       setToken(token)
     },
     setHasGetInfo (state, status) {
@@ -61,9 +61,9 @@ export default {
       state.messageContentStore[msg_id] = content
     },
     moveMsg (state, { from, to, msg_id }) {
-      const index = state[from].findIndex(_ => _.msg_id === msg_id)
-      const msgItem = state[from].splice(index, 1)[0]
-      msgItem.loading = false
+      const index = state[from].findIndex(_ => _.msg_id === msg_id);
+      const msgItem = state[from].splice(index, 1)[0];
+      msgItem.loading = false;
       state[to].unshift(msgItem)
     }
   },
@@ -75,14 +75,16 @@ export default {
   actions: {
     // 登录
     handleLogin ({ commit }, { userName, password }) {
-      userName = userName.trim()
+      userName = userName.trim();
+
       return new Promise((resolve, reject) => {
         login({
           userName,
           password
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
+          //todo: 登录成功后，返回token，然后存token在前端
+          const data = res.data;
+          commit('setToken', data.token);
           resolve()
         }).catch(err => {
           reject(err)
@@ -93,8 +95,8 @@ export default {
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
+          commit('setToken', '');
+          commit('setAccess', []);
           resolve()
         }).catch(err => {
           reject(err)
@@ -109,13 +111,15 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
+          // todo: 通过提交token获取用户信息，从api/user中进行远程获取，不通过mock
           getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvatar', data.avatar)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
+            const data = res.data;
+            console.log(res.data);
+            commit('setAvatar', data.avatar);
+            commit('setUserName', data.name);
+            commit('setUserId', data.user_id);
+            commit('setAccess', data.access);
+            commit('setHasGetInfo', true);
             resolve(data)
           }).catch(err => {
             reject(err)
