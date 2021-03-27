@@ -28,6 +28,7 @@ export default {
    * @description 默认打开的首页的路由name值，默认为home
    */
   homeName: 'home',
+  // homeName: 'hotel_manage/rooms_status_page',
   /**
    * @description 需要加载的插件
    */

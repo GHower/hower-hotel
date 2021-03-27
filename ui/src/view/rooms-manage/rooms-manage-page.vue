@@ -257,7 +257,6 @@
       }
     },
     mounted() {
-      //todo：获取房间类型等
     }
   }
 </script>

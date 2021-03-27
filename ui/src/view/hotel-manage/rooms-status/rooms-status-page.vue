@@ -94,9 +94,9 @@
             <template slot-scope="{ row }" slot="sex">
               {{ row.sex===1 ? '男':'女'}}
             </template>
-            <template slot-scope="{ row, index }" slot="action">
-              <Button type="error" size="small" @click="remove(index)">删除</Button>
-            </template>
+<!--            <template slot-scope="{ row, index }" slot="action">-->
+<!--              <Button type="error" size="small" @click="remove(index)">删除</Button>-->
+<!--            </template>-->
           </Table>
         </Row>
       </div>
@@ -105,6 +105,10 @@
         <Row>
           <Col span="12">
             <span style="font-size: 15px;font-weight: bold">消费明细</span>
+<!--            <span style="font-size: 12px;">-->
+<!--              合计:<b>{{pay_fact()}}</b>-->
+<!--            </span>-->
+            <a style="margin-left: 10px" href="javascript:" @click="addPayInfo()">新增入账记录</a>
           </Col>
           <Col span="12">
           </Col>
@@ -120,9 +124,20 @@
           </Table>
         </Row>
       </div>
+      <div class="drawer_footer" v-if="drawerOrderOkBtn">
+        <Button type="warning" ghost @click="order_ok"
+                :loading="drawer.orderOkBtnLoading"
+        >订单核销</Button>
+      </div>
     </Drawer>
-    <Modal v-model="inputInfoModal.open">
-
+    <Modal width="300" title="新增入账"
+           v-model="inputInfoModal.open"
+           @on-ok="addPayInfo_save"
+    >
+      <div style="text-align: center;font-size: 18px;margin-bottom: 10px">
+        订单号：{{drawer.order_info.orderInfo.id}}
+      </div>
+      入账金额:<Input type="text" v-model="inputInfoModal.payInfo.money"/>
     </Modal>
   </div>
 </template>
@@ -133,6 +148,8 @@
     getRoomInfoListDTO,
     getOrderByRoom,
     getOrderPayInfo,
+    postOrderPayInfo,
+    postOrderOk,
 
   } from '@/api/data'
 
@@ -143,6 +160,7 @@
       return {
         drawer: {
           open: false,
+          orderOkBtnLoading:false,
           title: '',// 房型+房号,如 豪华大床房-8201
           order_info: {
             orderInfo: {},
@@ -171,12 +189,12 @@
               key: 'contact',
               width: 110
             },
-            {
-              title: '操作',
-              slot: 'action',
-              width: 140,
-              align: 'center'
-            }
+            // {
+            //   title: '操作',
+            //   slot: 'action',
+            //   width: 140,
+            //   align: 'center'
+            // }
           ],
           pay_info: {
             columns: [
@@ -199,18 +217,8 @@
                 slot: 'staffInfo',
               }
             ],
-            datas: [
-              {
-                id:'',
-                payWay: '现金',
-                money: 200,
-                createTime: '2021-03-15 15:00:08',
-                staffInfo: {
-                  id: 1001,
-                  name: '邑大'
-                },
-              }
-            ]
+            pay_fact:0,// 实际应收
+            datas: []
           },
         },
         rooms_status_type: [
@@ -222,6 +230,11 @@
         room_infos: [],
         inputInfoModal: {
           open: false,
+          payInfo:{
+            oId:'',
+            money: 0,
+            payWay:'现金',
+          }
         }
       }
     },
@@ -251,6 +264,7 @@
           roomType: '',
           staffInfo: {},
         };
+        this.drawer.pay_info.datas = [];
 
       },
       inputInfo() {
@@ -269,7 +283,8 @@
       },
       getOrderByRoomId(room) {
         getOrderByRoom({
-          id: room.id
+          id: room.id,
+          status:"1",
         }).then(res => {
           console.log(res.data.result);
           this.drawer.order_info = res.data.result;
@@ -286,10 +301,49 @@
           this.drawer.pay_info.datas = res.data.result;
           console.log(res.data.result)
         })
+      },
+      addPayInfo(){
+        // todo:检查金额
+        this.drawer.pay_info.datas.forEach(e=>{
+          this.drawer.pay_info.pay_fact += e.money
+        });
+        if(this.drawer.pay_info.pay_fact<=this.drawer.order_info.orderInfo.price){
+          this.inputInfoModal.open = true;
+          this.inputInfoModal.payInfo.oId = this.drawer.order_info.orderInfo.id;
+        }else{
+          this.$Message.error({
+            duration:2,
+            content:"订单金额已达到，不可新增入账记录"
+          });
+          return false;
+        }
+      },
+      addPayInfo_save(){
+        postOrderPayInfo(this.inputInfoModal.payInfo).then(res=>{
+          console.log(res);
+          this.getOrderPayInfo(this.drawer.order_info.orderInfo.id);
+        })
+      },
+      order_ok(){
+        //TODO:核销订单
+        this.drawer.orderOkBtnLoading=true;
+        if(this.drawer.pay_info.pay_fact<=this.drawer.order_info.orderInfo.price){
+          this.inputInfoModal.open = true;
+          this.inputInfoModal.payInfo.oId = this.drawer.order_info.orderInfo.id;
+          postOrderOk(this.drawer.order_info.orderInfo).then(res=>{
+            console.log(res);
+            this.drawer.orderOkBtnLoading=false;
+            this.drawer.open=false;
+          })
+        }
+      },
+    },
+    computed:{
+      drawerOrderOkBtn(){
+        return this.drawer.order_info.orderInfo.id!==undefined
       }
     },
     mounted() {
-      //todo：获取房间类型等
       this.getRoomInfoListDTO();
     }
   }
@@ -338,5 +392,8 @@
   .order_label {
     margin: 0 10px;
   }
-
+  .drawer_footer{
+    margin-top: 25px;
+    text-align: center;
+  }
 </style>

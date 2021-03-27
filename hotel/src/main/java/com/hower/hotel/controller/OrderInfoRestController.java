@@ -8,9 +8,12 @@ import com.hower.hotel.common.responses.ApiResponses;
 import com.hower.hotel.framework.controller.SuperController;
 import com.hower.hotel.model.dto.OrderInfoDTO;
 import com.hower.hotel.model.entity.*;
+import com.hower.hotel.model.parm.OrderOkParams;
 import com.hower.hotel.service.impl.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -49,7 +52,10 @@ public class OrderInfoRestController extends SuperController {
     @ApiOperation("/{id}")
     @GetMapping("/{id}")
     public ApiResponses<OrderInfo> getById(@PathVariable Integer id) {
-        return success(orderInfoService.getById(id));
+        OrderInfo one = orderInfoService.getOne(new QueryWrapper<OrderInfo>()
+                .eq(OrderInfo.ID, id)
+                .eq(OrderInfo.STATUS,"1"));
+        return success(one);
     }
 
     @ApiOperation("/")
@@ -74,8 +80,10 @@ public class OrderInfoRestController extends SuperController {
             OrderInfo orderInfo,
             @RequestParam(required = false, defaultValue = "1") Integer current,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        IPage<OrderInfo> infoIPage = orderInfoService.page(new Page<OrderInfo>()
-                .setCurrent(current), new QueryWrapper<>(orderInfo));
+        IPage<OrderInfo> infoIPage = orderInfoService.page(
+                new Page<OrderInfo>().setCurrent(current),
+                new QueryWrapper<>(orderInfo).eq(OrderInfo.STATUS,"1")
+        );
         List<OrderInfoDTO> result = new ArrayList<>();
         for (OrderInfo record : infoIPage.getRecords()) {
             result.add(order2DTO(record));
@@ -92,8 +100,10 @@ public class OrderInfoRestController extends SuperController {
     @ApiOperation("/byRoom")
     @GetMapping("/byRoom")
     public ApiResponses<OrderInfoDTO> getOrderByRoomId(RoomInfo roomInfo) {
-        OrderInfo orderInfo = orderInfoService.getOne(
-                new QueryWrapper<>(new OrderInfo().setRId(roomInfo.getId())));
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>(
+                new OrderInfo().setRId(roomInfo.getId()).setStatus("1"));
+
+        OrderInfo orderInfo = orderInfoService.getOne(queryWrapper);
         if (orderInfo == null) {
             return success(new OrderInfoDTO());
         }
@@ -112,13 +122,27 @@ public class OrderInfoRestController extends SuperController {
         List<OrderInfoDTO> result = new ArrayList<>();
 
         List<OrderInfo> orderInfos = orderInfoService.list(new QueryWrapper<OrderInfo>()
-                .gt("in_time", getDate() + " 10:00:00")
+//                .gt("in_time", getDate() + " 10:00:00")
                 .lt("out_time", getDate(1) + " 14:30:00"));
         for (OrderInfo record : orderInfos) {
             result.add(order2DTO(record));
         }
         return success(result);
     }
+
+    @ApiOperation("核销订单")
+    @PostMapping("/ok")
+    @RequiresRoles({"admin"})
+    public ApiResponses<Boolean> postPayInfoOk(@RequestBody OrderInfo orderInfo){
+        orderInfo.setStatus("0");
+        orderInfoService.updateById(orderInfo);
+        RoomInfo roomInfo = new RoomInfo();
+        roomInfo.setId(orderInfo.getRId());
+        roomInfo.setStatus(2);
+        roomInfoService.updateById(roomInfo);
+        return success(true);
+    }
+
 
     private String getDate(){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -99,9 +99,6 @@
 <script>
   import {getDepList, getStaffInfoPage, getStaffInfoSearch, postStaffInfo,getStaffInfo} from '@/api/data'
 
-  /**
-   * todo: 修改、删除、权限检查
-   */
   export default {
     name: "staff-manage-page",
     components: {},

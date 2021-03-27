@@ -69,7 +69,7 @@
               <span class="order_label">预定方</span><span>{{Modal.detail.customerInfo.name}}</span>
             </Col>
             <Col span="12">
-              <span class="order_label">订单状态</span><span>{{Modal.detail.price}}元</span>
+              <span class="order_label">订单金额</span><span>{{Modal.detail.price}}元</span>
             </Col>
           </Row>
           <Row>
@@ -199,7 +199,6 @@
     },
     methods: {
       changePage(p) {
-        //TODO: p；页码
         console.log(p, '页')
       },
       show(row, index) {

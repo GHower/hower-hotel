@@ -124,6 +124,20 @@ export const getOrderPayInfo = (params) => {
     params:params
   })
 };
+export const postOrderPayInfo = (data) => {
+  return axios.request({
+    url: '/orderPayInfo/add',
+    method: 'post',
+    data:data
+  })
+};
+export const postOrderOk = (data) => {
+  return axios.request({
+    url: '/orderInfo/ok',
+    method: 'post',
+    data:data
+  })
+};
 //Map映射的数据
 export const getCustomerVip = () => {
   return axios.request({

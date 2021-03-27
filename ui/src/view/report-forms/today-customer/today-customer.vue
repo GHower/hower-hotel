@@ -82,7 +82,6 @@
       getTodayCustomer() {
         getOrderToday({}).then(res => {
           const result = res.data.result;
-          console.log(result);
           let data = [];
           result.forEach(e => {
             e.guests.forEach(g => {
@@ -90,7 +89,7 @@
                 ...g,
                 roomType: e.roomType,
                 number: e.roomInfo.number,
-                sex: g.sex === 1 ? '男' : '女',
+                sex: g.sex === '1' ? '男' : '女',
               })
             })
           });

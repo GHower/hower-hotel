@@ -29,7 +29,12 @@ export default {
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
+        console.log(res);
+        if(res.status===400){
+          alert(res.msg);
+          return false;
+        }
+        this.getUserInfo().then(res2 => {
           this.$router.push({
             name: this.$config.homeName
           })

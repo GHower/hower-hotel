@@ -7,14 +7,15 @@ import com.hower.hotel.framework.controller.SuperController;
 import com.hower.hotel.model.dto.OrderPayInfoDTO;
 import com.hower.hotel.model.entity.OrderPayInfo;
 import com.hower.hotel.model.entity.StaffInfo;
+import com.hower.hotel.model.parm.OrderOkParams;
 import com.hower.hotel.service.impl.OrderPayInfoServiceImpl;
+import com.hower.hotel.service.impl.RoomInfoServiceImpl;
 import com.hower.hotel.service.impl.StaffInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class OrderPayInfoRestController extends SuperController {
     private OrderPayInfoServiceImpl orderPayInfoService;
     @Resource
     private StaffInfoServiceImpl staffInfoService;
+    @Resource
+    private RoomInfoServiceImpl roomInfoService;
 
     @ApiOperation("获取订单支付信息")
     @GetMapping("/")
@@ -51,5 +54,14 @@ public class OrderPayInfoRestController extends SuperController {
         });
         return success(list);
     }
+    @ApiOperation("新增订单支付信息")
+    @PostMapping("/add")
+    @RequiresRoles({"admin"})
+    public ApiResponses<Boolean> postPayInfo(@RequestBody OrderPayInfo orderPayInfo){
+        StaffInfo staffInfo = (StaffInfo) SecurityUtils.getSubject().getPrincipal();
+        orderPayInfo.setSId( staffInfo.getId());
+        return success(true);
+    }
+
 }
 

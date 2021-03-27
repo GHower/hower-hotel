@@ -63,7 +63,6 @@
           this.err_tips = '两次密码不一致';
           return false
         }
-        //todo:后端请求,验证旧密码
         postChangepwd({
           oldPwd:this.old_pwd,
           newPwd:this.new_pwd
