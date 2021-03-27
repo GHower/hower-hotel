@@ -11,6 +11,7 @@ import com.hower.hotel.model.entity.StaffInfo;
 import com.hower.hotel.service.impl.StaffInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -50,17 +51,33 @@ public class StaffInfoRestController extends SuperController {
                         .setCurrent(current),
                 new QueryWrapper<StaffInfo>(staffInfo)));
     }
+
     @GetMapping("/search")
     @ApiOperation("/search")
     public ApiResponses<IPage<StaffInfo>> getCustomerInfoLike(
             @RequestParam String column,
             @RequestParam String value,
-            @RequestParam(defaultValue = "1",required = false)Integer current,
-            @RequestParam(defaultValue = "10",required = false) Integer pageSize
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize
     ) {
-        System.out.println(column+"  "+value);
-        IPage<StaffInfo> info = staffInfoService.likePage(column,value,current,pageSize);
+        System.out.println(column + "  " + value);
+        IPage<StaffInfo> info = staffInfoService.likePage(column, value, current, pageSize);
         return success(info);
     }
+
+    //增删改
+    @ApiOperation("/")
+    @CrossOrigin
+    @PostMapping("/")
+    @RequiresRoles({"super_admin"})
+    public ApiResponses<Boolean> postStaffInfo(@RequestBody StaffInfo staffInfo) {
+        System.out.println(staffInfo);
+        if (staffInfo.getId() == null && staffInfo.getIdentity() == null) {
+            return failure(false);
+        }
+        return success(staffInfoService.saveOrUpdate(staffInfo));
+    }
+
+
 }
 

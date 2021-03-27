@@ -29,7 +29,6 @@ export default {
     ]),
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
-        //todo：登录成功了，再根据得到的token获取用户信息，获取成功后跳转到首页
         this.getUserInfo().then(res => {
           this.$router.push({
             name: this.$config.homeName

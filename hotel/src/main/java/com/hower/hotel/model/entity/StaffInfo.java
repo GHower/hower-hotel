@@ -72,6 +72,10 @@ public class StaffInfo extends BaseModel {
      * 修改者ID
      */
     private Integer updateUid;
+    /**
+     * 性别
+     */
+    private Integer sex;
 
     /**
      * 创建时间
@@ -99,6 +103,7 @@ public class StaffInfo extends BaseModel {
     public static final String STATUS = "status";
 
     public static final String SHIFT = "shift";
+    public static final String SEX = "sex";
 
     public static final String CREATE_UID = "create_uid";
 

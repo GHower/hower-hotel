@@ -44,6 +44,20 @@ export const getStaffInfoSearch = (params) => {
     params:params
   })
 };
+export const getStaffInfo = (id) => {
+  return axios.request({
+    url: '/staffInfo/'+id,
+    method: 'get',
+  })
+};
+export const postStaffInfo = (data) => {
+  return axios.request({
+    url: '/staffInfo/',
+    method: 'post',
+    data:data
+  })
+};
+
 //部门结构
 export const getDepartmentTree = (params) => {
   return axios.request({

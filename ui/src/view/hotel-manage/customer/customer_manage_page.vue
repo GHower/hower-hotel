@@ -185,6 +185,7 @@
         postCustomerData(
           this.modal.detail
         ).then(res=>{
+          console.log(res);
           if(res.data.result){
             this.modal.subLoading=false;
             this.modal.open=false;
@@ -197,6 +198,7 @@
             })
           }
         }).catch(err=>{
+          console.log(err)
         })
       },
       remove(id,index){

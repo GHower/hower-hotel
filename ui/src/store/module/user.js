@@ -82,8 +82,8 @@ export default {
           userName,
           password
         }).then(res => {
-          //todo: 登录成功后，返回token，然后存token在前端
           const data = res.data;
+          console.log(data);
           commit('setToken', data.token);
           resolve()
         }).catch(err => {
@@ -111,14 +111,13 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
-          // todo: 通过提交token获取用户信息，从api/user中进行远程获取，不通过mock
           getUserInfo(state.token).then(res => {
             const data = res.data;
             console.log(res.data);
-            commit('setAvatar', data.avatar);
+            commit('setAvatar', "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png");
             commit('setUserName', data.name);
-            commit('setUserId', data.user_id);
-            commit('setAccess', data.access);
+            commit('setUserId', data.id);
+            commit('setAccess', []);
             commit('setHasGetInfo', true);
             resolve(data)
           }).catch(err => {

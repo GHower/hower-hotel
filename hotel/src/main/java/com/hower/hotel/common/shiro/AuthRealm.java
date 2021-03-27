@@ -16,21 +16,20 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
 public class AuthRealm extends AuthorizingRealm {
-//    @Autowired
-//    private ShiroService shiroService;
-    @Autowired
+    @Resource
     private StaffInfoServiceImpl staffInfoService;
-    @Autowired
+    @Resource
     private SysTokenServiceImpl tokenService;
 
-    @Autowired
+    @Resource
     private RoleServiceImpl roleService;
-    @Autowired
+    @Resource
     private SysPermissionServiceImpl sysPermissionService;
     /**
      * 授权 获取用户的角色和权限
@@ -40,10 +39,10 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //1. 从 PrincipalCollection 中来获取登录用户的信息
         StaffInfo staffInfo = (StaffInfo) principals.getPrimaryPrincipal();
-
         //2.添加角色和权限
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         List<Role> byUId = roleService.getByUId(staffInfo.getId());
+//        System.out.println(byUId);
         for (Role role : byUId) {
             //2.1添加角色
             simpleAuthorizationInfo.addRole(role.getRoleName());
@@ -51,7 +50,7 @@ public class AuthRealm extends AuthorizingRealm {
             List<SysPermission> byRoleId = sysPermissionService.getByRoleId(role.getId());
             for (SysPermission permission : byRoleId) {
                 //2.1.1添加权限
-                System.out.println(permission);
+//                System.out.println(permission);
                 simpleAuthorizationInfo.addStringPermission(permission.getPermission());
             }
         }

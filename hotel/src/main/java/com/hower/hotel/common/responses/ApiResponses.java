@@ -97,5 +97,19 @@ public class ApiResponses<T> implements Serializable {
                 .exception(exception.toString())
                 .build();
     }
-
+    public static <T> ApiResponses<T> failure(ErrorCode errorCode) {
+//        return ResponseUtils.exceptionMsg(FailedResponse
+//        .builder().msg(errorCode.getMsg()), exception)
+//                .error(errorCode.getError())
+//                .show(errorCode.isShow())
+//                .time(LocalDateTime.now())
+//                .status(errorCode.getHttpCode())
+//                .build();
+        return FailedResponse.<T>builder()
+                .msg(errorCode.getMsg())
+                .show(errorCode.isShow())
+                .status(errorCode.getHttpCode())
+                .time(LocalDateTime.now())
+                .build();
+    }
 }

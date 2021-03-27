@@ -9,7 +9,7 @@
         </Row>
         <Row>
           <Col span="14" offset="4" style="text-align: center">
-            名称
+            {{user.name}}
           </Col>
         </Row>
       </div>
@@ -30,8 +30,8 @@
             <Input type="text" v-model="formData.name" :disabled="edit_disable"/>
           </Col>
           <Col span="8" offset="2">
-            所属部门
-            <Input type="text" v-model="formData.dep_name" disabled/>
+            联系方式
+            <Input type="text" v-model="formData.contact" :disabled="edit_disable"/>
           </Col>
         </Row>
         <Row class="info_row">
@@ -41,8 +41,8 @@
             <RadioGroup v-model="formData.sex"
                         button-style="solid"
                         type="button" >
-              <Radio label="1"  border :disabled="edit_disable">男</Radio>
-              <Radio label="0" border :disabled="edit_disable">女</Radio>
+              <Radio :label="1"  border :disabled="edit_disable">男</Radio>
+              <Radio :label="0" border :disabled="edit_disable">女</Radio>
             </RadioGroup>
 
           </Col>
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+  import {postUserInfo} from "@/api/user"
+  import { mapActions } from 'vuex'
 
   export default {
     name: "personal-info-page",
@@ -87,6 +89,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getUserInfo'
+      ]),
       resetData(){
         for(let i in this.user){
           this.formData[i] = this.user[i];
@@ -99,14 +104,28 @@
         }
       },
       handleSave(){
-
+        console.log(this.formData);
+        postUserInfo(this.formData).then(res=>{
+          this.$Message.success({
+            top: 50,
+            duration:2,
+            content:"已保存",
+          });
+          this.getUserInfo().then(res => {
+            this.user = {...res};
+            this.formData = res;
+          })
+          this.edit_disable=!this.edit_disable;
+        })
       },
 
     },
     mounted() {
-
-    },
-
+      this.getUserInfo().then(res => {
+        this.user = {...res};
+        this.formData = res;
+      })
+    }
   }
 </script>
 

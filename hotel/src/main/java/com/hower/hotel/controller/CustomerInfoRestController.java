@@ -10,6 +10,7 @@ import com.hower.hotel.model.entity.CustomerInfo;
 import com.hower.hotel.service.impl.CustomerInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -52,8 +53,8 @@ public class CustomerInfoRestController extends SuperController {
     @CrossOrigin
     @PostMapping("/post")
     @ApiOperation("/post")
+    @RequiresRoles("admin")
     public ApiResponses<Boolean> postCustomerInfoByEntity(@RequestBody CustomerInfo customerInfo) {
-        System.out.println(customerInfo);
         return success(customerInfoService.saveOrUpdate(customerInfo));
     }
 

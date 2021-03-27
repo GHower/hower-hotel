@@ -45,13 +45,14 @@ public class SysTokenServiceImpl extends ServiceImpl<SysTokenMapper, SysToken> i
             sysToken.setToken(token);
             sysToken.setCreateTime(now);
             sysToken.setExpiresTime(expireTime);
+            baseMapper.insert(sysToken);
         } else {
             //更新token
             sysToken.setToken(token);
             sysToken.setCreateTime(now);
             sysToken.setExpiresTime(expireTime);
+            baseMapper.updateById(sysToken);
         }
-        baseMapper.insert(sysToken);
         result.put("token", token);
         result.put("expire", expireTime);
         return result;

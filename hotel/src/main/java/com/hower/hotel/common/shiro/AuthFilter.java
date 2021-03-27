@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Console;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,14 +60,17 @@ public class AuthFilter extends AuthenticatingFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        if (((HttpServletRequest) request).getMethod().equals(RequestMethod.GET.name())) {
+        if (((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())
+            ||((HttpServletRequest) request).getMethod().equals(RequestMethod.GET.name())
+        ) {
             return true;
         }
         return false;
     }
 
     /**
-     * 步骤2，拒绝访问的请求，会调用onAccessDenied方法，onAccessDenied方法先获取 token，再调用executeLogin方法
+     * 步骤2，拒绝访问的请求，会调用onAccessDenied方法，
+     * onAccessDenied方法先获取 token，再调用executeLogin方法
      *
      * @param request
      * @param response
@@ -76,10 +81,13 @@ public class AuthFilter extends AuthenticatingFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         //获取请求token，如果token不存在，直接返回
         String token = TokenUtil.getRequestToken((HttpServletRequest) request);
+        System.out.println(token);
         if (StringUtils.isBlank(token)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-            httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtil.getOrigin());
+//            httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtil.getOrigin());
+            httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+            httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
             httpResponse.setCharacterEncoding("UTF-8");
             Map<String, Object> result = new HashMap<>();
             result.put("status", 400);
@@ -88,6 +96,8 @@ public class AuthFilter extends AuthenticatingFilter {
             httpResponse.getWriter().print(json);
             return false;
         }
+        HttpServletResponse httpResponse = WebUtils.toHttp(response);
+        System.out.println("httpResponseStatus:"+httpResponse.getStatus());
         return executeLogin(request, response);
     }
 
@@ -99,8 +109,9 @@ public class AuthFilter extends AuthenticatingFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setContentType("application/json;charset=utf-8");
         httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtil.getOrigin());
-//        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+//        httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtil.getOrigin());
+        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
         httpResponse.setCharacterEncoding("UTF-8");
         try {
             //处理登录失败的异常

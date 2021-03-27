@@ -18,6 +18,7 @@ public class HttpContextUtil {
 
     public static String getOrigin(){
         HttpServletRequest request = getHttpServletRequest();
+
         return request.getHeader("Origin");
     }
 }

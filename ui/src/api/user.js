@@ -2,40 +2,46 @@ import axios from '@/libs/api.request'
 
 export const login = ({ userName, password }) => {
   const data = {
-    userName,
+    username:userName,
     password
   };
-  axios.request({
-    url: 'login',
-    data,
-    method: 'post'
-  }).then(res=>{
-    console.log(res.data)
-  });
   return axios.request({
-    url: 'login',
-    data,
+    url: '/login/login',
+    data:data,
     method: 'post'
   })
 };
 
 export const getUserInfo = (token) => {
-  console.log("远程的调用user_info");
   return axios.request({
-    url: 'get_info',
+    url: '/login/current',
     params: {
       token
     },
     method: 'get'
   })
-}
+};
 
-export const logout = (token) => {
+export const postUserInfo = (data) => {
   return axios.request({
-    url: 'logout',
+    url: '/staffInfo/',
+    data: data,
     method: 'post'
   })
-}
+};
+export const postChangepwd = (data) => {
+  return axios.request({
+    url: '/login/changePwd',
+    data: data,
+    method: 'post'
+  })
+};
+export const logout = (token) => {
+  return axios.request({
+    url: '/login/logout',
+    method: 'post',
+  })
+};
 
 export const getUnreadCount = () => {
   return axios.request({

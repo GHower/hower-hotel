@@ -88,7 +88,6 @@ export default [
       }
     ]
   },
-  // TODO:后台管理
   {
     path: '/back_manage',
     name: 'back_manage',
@@ -148,7 +147,6 @@ export default [
   //     },
   //   ]
   // },
-  //TODO: 个人中心
   {
     path: '/personal_center',
     name: 'personal_center',

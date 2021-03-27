@@ -6,7 +6,7 @@
     <div slot="title">
       <Row>
         <i-col span="20">
-          <b style="font-size: 18px">财务报表</b>
+          <b style="font-size: 18px">财务报表 - 员工薪酬报表</b>
         </i-col>
         <i-col span="4" style="text-align: right">
           <Button type="primary" icon="md-print" :loading="exportLoading" @click="exportExcel">打印</Button>

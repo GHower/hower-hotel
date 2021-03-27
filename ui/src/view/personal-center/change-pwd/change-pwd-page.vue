@@ -36,6 +36,8 @@
 </template>
 
 <script>
+  import { postChangepwd,logout } from "@/api/user"
+  import { mapActions } from 'vuex'
   export default {
     name: "personal-info-page",
     components: {},
@@ -48,6 +50,10 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getUserInfo',
+        "handleLogOut",
+      ]),
       handleSubmit() {
         if (this.new_pwd.length < 11 || this.new_pwd.length > 20) {
           this.err_tips = '密码长度11-20位';
@@ -58,6 +64,16 @@
           return false
         }
         //todo:后端请求,验证旧密码
+        postChangepwd({
+          oldPwd:this.old_pwd,
+          newPwd:this.new_pwd
+        }).then(res=>{
+          this.handleLogOut().then(res=>{
+            this.$router.push({
+              name: 'login'
+            })
+          })
+        })
       },
       handleFocus(){
         this.err_tips = '';
