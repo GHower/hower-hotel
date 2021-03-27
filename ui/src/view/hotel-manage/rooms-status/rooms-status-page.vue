@@ -8,9 +8,9 @@
             <Icon type="ios-radio-button-on" :color="item.color" size="22"/> {{item.name}}
           </span>
           </Col>
-          <Col span="12" class="input_info_div">
-            <Button type="primary" href="javascript:" @click="inputInfo">读卡录入</Button>
-          </Col>
+<!--          <Col span="12" class="input_info_div">-->
+<!--            <Button type="primary" href="javascript:" @click="inputInfo">读卡录入</Button>-->
+<!--          </Col>-->
         </Row>
       </div>
       <div class="room_ul">
@@ -152,7 +152,7 @@
     postOrderOk,
 
   } from '@/api/data'
-
+  //todo: 更换LOGO
   export default {
     name: 'rooms_status',
     components: {},
@@ -325,7 +325,7 @@
         })
       },
       order_ok(){
-        //TODO:核销订单
+        //TODO: 核销订单
         this.drawer.orderOkBtnLoading=true;
         if(this.drawer.pay_info.pay_fact<=this.drawer.order_info.orderInfo.price){
           this.inputInfoModal.open = true;

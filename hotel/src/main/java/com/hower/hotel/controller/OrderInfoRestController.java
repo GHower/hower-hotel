@@ -82,8 +82,7 @@ public class OrderInfoRestController extends SuperController {
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         IPage<OrderInfo> infoIPage = orderInfoService.page(
                 new Page<OrderInfo>().setCurrent(current),
-                new QueryWrapper<>(orderInfo).eq(OrderInfo.STATUS,"1")
-        );
+                new QueryWrapper<>(orderInfo));
         List<OrderInfoDTO> result = new ArrayList<>();
         for (OrderInfo record : infoIPage.getRecords()) {
             result.add(order2DTO(record));
@@ -100,10 +99,12 @@ public class OrderInfoRestController extends SuperController {
     @ApiOperation("/byRoom")
     @GetMapping("/byRoom")
     public ApiResponses<OrderInfoDTO> getOrderByRoomId(RoomInfo roomInfo) {
+        // 通过房间查出订单，只查租住中的订单，需要根据入店时间和离店时间判断
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>(
-                new OrderInfo().setRId(roomInfo.getId()).setStatus("1"));
-
+                new OrderInfo().setRId(roomInfo.getId()).setStatus("2"));
+//        queryWrapper.gt(OrderInfo.OUT_TIME,getDate(1) + " 14:30:00");
         OrderInfo orderInfo = orderInfoService.getOne(queryWrapper);
+        System.out.println(orderInfo);
         if (orderInfo == null) {
             return success(new OrderInfoDTO());
         }
@@ -134,7 +135,7 @@ public class OrderInfoRestController extends SuperController {
     @PostMapping("/ok")
     @RequiresRoles({"admin"})
     public ApiResponses<Boolean> postPayInfoOk(@RequestBody OrderInfo orderInfo){
-        orderInfo.setStatus("0");
+        orderInfo.setStatus("1");
         orderInfoService.updateById(orderInfo);
         RoomInfo roomInfo = new RoomInfo();
         roomInfo.setId(orderInfo.getRId());

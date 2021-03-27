@@ -69,6 +69,7 @@ export default {
       this.$emit('on-change', !this.value)
     })
     this.$emit('input', isFullscreen)
+
   }
 }
 </script>

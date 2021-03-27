@@ -172,9 +172,8 @@
         orders: [],
         statusToCN: {
           1: '有效',
-          2: '待入住',
-          3: '入住中',
-          4: '已取消'
+          2: '入住中',
+          3: '已取消'
         },
         openModal: false,
         loading: false,
