@@ -49,4 +49,4 @@ new Vue({
   i18n,
   store,
   render: h => h(App)
-})
+});

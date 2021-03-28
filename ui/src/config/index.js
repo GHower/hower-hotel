@@ -22,7 +22,7 @@ export default {
   // },
   baseUrl: {
     dev: 'http://127.0.0.1',
-    pro: 'http://127.0.0.1:8088'
+    pro: 'http://121.5.100.147:8088'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home

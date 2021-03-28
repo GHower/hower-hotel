@@ -22,6 +22,9 @@
         <template slot-scope="{ row,index }" slot="shift">
           <span>{{row.shift===0?'白班':'夜班'}}</span>
         </template>
+        <template slot-scope="{ row,index }" slot="status">
+          <span>{{row.status==='0'?'离职':'在职'}}</span>
+        </template>
         <template slot-scope="{ row,index }" slot="action">
           <Button type="primary" size="small" style="margin-right: 5px" @click="edit(row.id,index)">修改</Button>
           <Button type="error" size="small" @click="remove(row.id,index)">辞退</Button>
@@ -129,26 +132,20 @@
             title: '联系方式',
           },
           {
+            key: 'status',
+            slot: 'status',
+            title: '就职状态',
+          },
+          {
             key: 'action',
             slot: 'action',
             title: '操作',
           }
         ],
-        tableData: [
-          {
-            id: 10001,
-            depId: 2,
-            name: '亚索',
-            shift: '白班',
-            email: '123123123@qq.com',
-            contact: '13612345678',
-          }
-        ],
+        tableData: [],
         searchKey: '',
         searchValue: '',
-        depList: [{
-          id: '', name: '', status: 1
-        }],
+        depList: [],
         tableLoading: false,
         page: {
           current: 1,
@@ -167,6 +164,7 @@
             depId: 1,
             contact: 13612345678,
             shift: 1,
+            status:1,
           },
         }
       }
@@ -199,6 +197,7 @@
             });
             return false;
           }
+          let that = this;
           this.$Modal.confirm({
             title:"辞退",
             content:"你确定辞退该员工吗？",
@@ -207,7 +206,7 @@
                 id:id,
                 status:0
               }).then(res=>{
-                console.log(res)
+                that.getStaffInfoPage();
               })
             }
           })
@@ -228,7 +227,6 @@
           }
         })
       },
-
       handleSearch() {
         this.tableLoading = true;
         this.getStaffInfoSearch();
@@ -253,10 +251,7 @@
         }
       },
       mapDepName(row) {
-        return this.depList.filter((cur) => cur.id === row.depId)[0].name
-      },
-      DepName2Id(row) {
-        return this.depList.filter((cur) => cur.name === row.name)[0].id
+        return this.depList.length >0 ? this.depList.filter((cur) => cur.id === row.depId)[0].name:""
       },
       setDefaultSearchKey() {
         this.searchKey = this.tableTitle[0].key !== 'action' ? this.tableTitle[0].key : (this.tableTitle.length > 1 ? this.tableTitle[1].key : '')
@@ -281,13 +276,12 @@
         });
       }
     },
-    computed: {},
     mounted() {
       this.tableLoading = true;
       this.setDefaultSearchKey();
       getDepList().then(res => {
         this.depList = res.data.result;
-        this.getStaffInfoPage(1);
+        this.getStaffInfoPage();
       }).catch(err => {
       })
     }

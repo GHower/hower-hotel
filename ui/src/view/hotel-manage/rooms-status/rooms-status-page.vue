@@ -304,9 +304,12 @@
       },
       addPayInfo(){
         // todo:检查金额
+        let pay_fact = 0;
         this.drawer.pay_info.datas.forEach(e=>{
-          this.drawer.pay_info.pay_fact += e.money
+          pay_fact += e.money
         });
+        this.drawer.pay_info.pay_fact = pay_fact;
+
         if(this.drawer.pay_info.pay_fact<=this.drawer.order_info.orderInfo.price){
           this.inputInfoModal.open = true;
           this.inputInfoModal.payInfo.oId = this.drawer.order_info.orderInfo.id;
@@ -328,13 +331,18 @@
         //TODO: 核销订单
         this.drawer.orderOkBtnLoading=true;
         if(this.drawer.pay_info.pay_fact<=this.drawer.order_info.orderInfo.price){
-          this.inputInfoModal.open = true;
-          this.inputInfoModal.payInfo.oId = this.drawer.order_info.orderInfo.id;
+          // this.inputInfoModal.open = true;
+          // this.inputInfoModal.payInfo.oId = this.drawer.order_info.orderInfo.id;
           postOrderOk(this.drawer.order_info.orderInfo).then(res=>{
             console.log(res);
             this.drawer.orderOkBtnLoading=false;
             this.drawer.open=false;
           })
+        }else{
+          this.$Message.error({
+            duration:2,
+            content:"请核对消费情况!"
+          });
         }
       },
     },
