@@ -39,7 +39,7 @@ public class LoginController extends SuperController {
 
     @PostMapping("/login")
     @ApiOperation("登录操作")
-    @CrossOrigin
+//    @CrossOrigin
     public Map<String, Object> login(
             @RequestBody  LoginParams loginParams
     ) {
@@ -61,7 +61,7 @@ public class LoginController extends SuperController {
         return result;
     }
 
-    @CrossOrigin
+//    @CrossOrigin
     @PostMapping("/logout")
     @ApiOperation("用户退出操作")
     public ApiResponses<Boolean> logout(){
@@ -71,7 +71,7 @@ public class LoginController extends SuperController {
     }
 
     @ApiOperation("/changePwd")
-    @CrossOrigin
+//    @CrossOrigin
     @PostMapping("/changePwd")
     @RequiresRoles({"admin"})
     public ApiResponses<Boolean> postChangeWord(@RequestBody ChangePwdParams changePwdParams) {
